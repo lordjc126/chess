@@ -11,18 +11,12 @@ public class ChessboardComponent extends JComponent {
     private ChessListener chessListener = new ChessboardChessListener(this);
     private ChessComponent[][] chessboard = new ChessComponent[10][9];
     private ChessColor currentColor = ChessColor.RED;
-    private String ROB = "";
+    private JLabel whoTurn;
 
-    public String getROB() {
-        if(currentColor == ChessColor.RED){
-            return "RED TURN";
-        }
-        return "BLACK TURN";
-    }
-
-    public ChessboardComponent(int width, int height) {
+    public ChessboardComponent(int width, int height,JLabel l) {
         setLayout(null); // Use absolute layout.
         setSize(width, height);
+        whoTurn = l;
 
         ChessComponent.registerListener(chessListener);
         for (int i = 0; i < chessboard.length; i++) {
@@ -93,6 +87,13 @@ public class ChessboardComponent extends JComponent {
         chessboard[row1][col1] = chess1;
         int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
         chessboard[row2][col2] = chess2;
+        if(currentColor == ChessColor.RED){
+            whoTurn.setText("BLACK TURN");
+            whoTurn.setForeground(Color.BLACK);
+        }else{
+            whoTurn.setText("RED TURN");
+            whoTurn.setForeground(Color.RED);
+        }
     }
 
     public void swapColor() {

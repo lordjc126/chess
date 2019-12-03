@@ -4,21 +4,23 @@ import xyz.chengzi.cs102a.chinesechess.chess.ChessColor;
 import xyz.chengzi.cs102a.chinesechess.chessboard.ChessboardComponent;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ChessGameFrame extends JFrame {
     public ChessGameFrame() {
-        setTitle("chess");
-        setSize(411, 450);
+        setTitle("Chinese Chess");
+        setSize(411, 500);
         setLocationRelativeTo(null); // Center the window.
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
 
-        ChessboardComponent chessboard = new ChessboardComponent(400, 400);
-        add(chessboard);
-
-        JLabel statusLabel = new JLabel(chessboard.getROB());
+        JLabel statusLabel = new JLabel("RED TURN");
+        statusLabel.setForeground(Color.RED);
         statusLabel.setLocation(0, 400);
         statusLabel.setSize(200, 30);
+        ChessboardComponent chessboard = new ChessboardComponent(400, 400,statusLabel);
+        add(chessboard);
+
         add(statusLabel);
 
         JButton button = new JButton("...");

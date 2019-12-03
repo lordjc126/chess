@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class ChessGameFrame extends JFrame {
     public ChessGameFrame() {
-        setTitle("chess");
+        setTitle("CHESS");
         setSize(411, 450);
         setLocationRelativeTo(null); // Center the window.
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

@@ -57,6 +57,9 @@ public abstract class ChessComponent extends JComponent {
         setLocation(point2);
         another.setChessboardPoint(chessboardPoint1);
         another.setLocation(point1);
+        String n = chessboardPoint1.getId();
+        chessboardPoint1.setId(chessboardPoint2.getId());
+        chessboardPoint2.setId(n);
     }
 
     @Override

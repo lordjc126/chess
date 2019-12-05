@@ -7,7 +7,7 @@ import java.awt.*;
 public class EmptySlotComponent extends ChessComponent {
     public EmptySlotComponent(ChessboardPoint chessboardPoint, Point location) {
         super(chessboardPoint, location, ChessColor.NONE);
-        ChessName = "em";
+        ChessName = ".";
     }
 
     @Override

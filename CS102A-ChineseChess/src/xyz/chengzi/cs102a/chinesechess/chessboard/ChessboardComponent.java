@@ -116,6 +116,7 @@ public class ChessboardComponent extends JComponent {
             whoTurn.setText("RED TURN");
             whoTurn.setForeground(Color.RED);
         }
+        System.out.println(toString(chessboard));
     }
 
     public void swapColor() {
@@ -349,6 +350,16 @@ public class ChessboardComponent extends JComponent {
             {'c','h','e','a','g','a','e','h','c'}
         };
         return c;
+    }
+
+    public String toString(ChessComponent[][] board){
+        String s = "";
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                s += board[i][j].getChessName();
+            }
+        }
+        return s;
     }
 
 }

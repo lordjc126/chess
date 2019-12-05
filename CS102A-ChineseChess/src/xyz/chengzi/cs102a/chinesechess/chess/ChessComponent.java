@@ -87,5 +87,8 @@ public abstract class ChessComponent extends JComponent {
         this.getChessboardPoint().setId(ChessName);
     }
 
+    public String getChessName() {
+        return ChessName;
+    }
 }
 

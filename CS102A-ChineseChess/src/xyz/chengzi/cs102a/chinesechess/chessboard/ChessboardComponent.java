@@ -78,11 +78,33 @@ public class ChessboardComponent extends JComponent {
 
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
         // Note that chess1 has higher priority, 'destroys' chess2 if exists.
+        ChessComponent chess3 = chess2;
         if (!(chess2 instanceof EmptySlotComponent)) {
             remove(chess2);
             add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation()));
         }
         chess1.swapLocation(chess2);
+        if(chess3.getChessName().equals("g")){
+            Object[] options = {"再来一局","退出"};
+            int result = JOptionPane.showOptionDialog(this, "BLACK WIN!", "WIN",JOptionPane.YES_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+            if(result == 0){
+                loadGame(initial());
+            }else if(result == 1){
+                System.exit(0);
+            }
+        }
+        if(chess3.getChessName().equals("G")){
+            Object[] options = {"再来一局","退出"};
+            int result = JOptionPane.showOptionDialog(this, "RED WIN!", "WIN",JOptionPane.YES_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+            if(result == 0){
+                loadGame(initial());
+                currentColor = ChessColor.BLACK;
+            }else if(result == 1){
+                System.exit(0);
+            }
+        }
         int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
         chessboard[row1][col1] = chess1;
         int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
@@ -234,4 +256,98 @@ public class ChessboardComponent extends JComponent {
     private Point calculatePoint(int row, int col) {
         return new Point(col * getWidth() / 9, row * getHeight() / 10);
     }
+
+    private void loadGame(char[][] arr1){
+        if(arr1.length != 11 || arr1[0].length != 9){
+            System.out.println("Invalid Dimension");
+        }else{
+            char[][] arr = new char[10][9];
+
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 9; j++) {
+                    arr[i][j] = arr1[i][j];
+                }
+            }
+
+            for (int i = 6; i < 11; i++) {
+                for (int j = 0; j < 9; j++) {
+                    arr[i-1][j] = arr1[i][j];
+                }
+            }
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 9; j++) {
+                    putChessOnBoard(new EmptySlotComponent(new ChessboardPoint(i, j), calculatePoint(i, j)));
+                }
+            }
+
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 9; j++) {
+                    switch (arr[i][j]){
+                        case 'C' :
+                            initTestBoardC(i, j, ChessColor.BLACK);
+                            break;
+                        case 'c' :
+                            initTestBoardc(i, j, ChessColor.RED);
+                            break;
+                        case 'G' :
+                            initTestBoardBossBlack(i, j, ChessColor.BLACK);
+                            break;
+                        case 'g' :
+                            initTestBoardBossRed(i, j, ChessColor.RED);
+                            break;
+                        case 'A' :
+                            initTestBoardShiRBlack(i, j, ChessColor.BLACK);
+                            break;
+                        case 'a' :
+                            initTestBoardShiRed(i, j, ChessColor.RED);
+                            break;
+                        case 'E' :
+                            initTestBoardEleBlack(i, j, ChessColor.BLACK);
+                            break;
+                        case 'e' :
+                            initTestBoardEleRed(i, j, ChessColor.RED);
+                            break;
+                        case 'H' :
+                            initTestBoardHorseBlack(i, j, ChessColor.BLACK);
+                            break;
+                        case 'h' :
+                            initTestBoardHorseRed(i, j, ChessColor.RED);
+                            break;
+                        case 'N' :
+                            initTestBoardPaoBlack(i, j, ChessColor.BLACK);
+                            break;
+                        case 'n' :
+                            initTestBoardPaoRed(i, j, ChessColor.RED);
+                            break;
+                        case 'S' :
+                            initTestBoardSoldierBlack(i, j, ChessColor.BLACK);
+                            break;
+                        case 's' :
+                            initTestBoardSoldierRed(i, j, ChessColor.RED);
+                            break;
+                        case '.' :
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    private static char[][] initial(){
+        char[][] c = new char[][]{
+            {'C','H','E','A','G','A','E','H','C'},
+            {'.','.','.','.','.','.','.','.','.'},
+            {'.','N','.','.','.','.','.','N','.'},
+            {'S','.','S','.','S','.','S','.','S'},
+            {'.','.','.','.','.','.','.','.','.'},
+            {'-','-','-','-','-','-','-','-','-'},
+            {'.','.','.','.','.','.','.','.','.'},
+            {'s','.','s','.','s','.','s','.','s'},
+            {'.','n','.','.','.','.','.','n','.'},
+            {'.','.','.','.','.','.','.','.','.'},
+            {'c','h','e','a','g','a','e','h','c'}
+        };
+        return c;
+    }
+
 }

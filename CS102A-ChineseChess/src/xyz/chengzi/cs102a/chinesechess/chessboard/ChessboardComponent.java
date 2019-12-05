@@ -17,6 +17,9 @@ public class ChessboardComponent extends JComponent {
     private int move = 0;
     private int n;
 
+    //-------------------------------------------------------------------------------------------------getter and setter
+
+
     public void setCurrentColor(ChessColor currentColor) {
         this.currentColor = currentColor;
     }
@@ -32,6 +35,28 @@ public class ChessboardComponent extends JComponent {
     public int getN() {
         return n;
     }
+
+    public ChessComponent[][] getChessboard() {
+        return chessboard;
+    }
+
+    public ChessColor getCurrentColor() {
+        return currentColor;
+    }
+
+    public JLabel getWhoTurn() {
+        return whoTurn;
+    }
+
+    public ArrayList<String> getStringList() {
+        return stringList;
+    }
+
+    public final String initial(){
+        return "CHEAGAEHC..........N.....N.S.S.S.S.S..................s.s.s.s.s.n.....n..........cheagaehc";
+    }
+
+    //-----------------------------------------------------------------------------------------------------constructor
 
     public ChessboardComponent(int width, int height, JLabel l) {
         setLayout(null); // Use absolute layout.
@@ -80,14 +105,6 @@ public class ChessboardComponent extends JComponent {
         initTestBoardSoldierRed(6, 8, ChessColor.RED);
     }
 
-    public ChessComponent[][] getChessboard() {
-        return chessboard;
-    }
-
-    public ChessColor getCurrentColor() {
-        return currentColor;
-    }
-
     public void putChessOnBoard(ChessComponent chessComponent) {
         int row = chessComponent.getChessboardPoint().getX(), col = chessComponent.getChessboardPoint().getY();
         if (chessboard[row][col] != null) {
@@ -96,9 +113,7 @@ public class ChessboardComponent extends JComponent {
         add(chessboard[row][col] = chessComponent);
     }
 
-    public JLabel getWhoTurn() {
-        return whoTurn;
-    }
+    //----------------------------------------------------------------------------------------------------------swap
 
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
         // Note that chess1 has higher priority, 'destroys' chess2 if exists.
@@ -153,6 +168,8 @@ public class ChessboardComponent extends JComponent {
     public void swapColor() {
         currentColor = currentColor == ChessColor.RED ? ChessColor.BLACK : ChessColor.RED;
     }
+
+    //--------------------------------------------------------------------------------------------------initialize
 
     private void initTestBoardC(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new ChariotBlack(new ChessboardPoint(row, col),
@@ -252,6 +269,8 @@ public class ChessboardComponent extends JComponent {
         putChessOnBoard(chessComponent);
     }
 
+    //--------------------------------------------------------------------------------------------------paint issue
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -288,6 +307,8 @@ public class ChessboardComponent extends JComponent {
     private Point calculatePoint(int row, int col) {
         return new Point(col * getWidth() / 9, row * getHeight() / 10);
     }
+
+    //--------------------------------------------------------------------------------------------------loadgame
 
     public void loadGame(String s){
         char[][] arr1 = toCharArray(s);
@@ -368,13 +389,7 @@ public class ChessboardComponent extends JComponent {
         }
     }
 
-    public final String initial(){
-        return "CHEAGAEHC..........N.....N.S.S.S.S.S..................s.s.s.s.s.n.....n..........cheagaehc";
-    }
-
-    public ArrayList<String> getStringList() {
-        return stringList;
-    }
+    //-----------------------------------------------------------------------------------------------to method
 
     @Override
     public String toString(){

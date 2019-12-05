@@ -84,6 +84,10 @@ public class ChessboardComponent extends JComponent {
             add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation()));
         }
         chess1.swapLocation(chess2);
+        int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
+        chessboard[row1][col1] = chess1;
+        int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
+        chessboard[row2][col2] = chess2;
         if(chess3.getChessName().equals("g")){
             Object[] options = {"再来一局","退出"};
             int result = JOptionPane.showOptionDialog(this, "BLACK WIN!", "WIN",JOptionPane.YES_OPTION,
@@ -105,10 +109,6 @@ public class ChessboardComponent extends JComponent {
                 System.exit(0);
             }
         }
-        int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
-        chessboard[row1][col1] = chess1;
-        int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
-        chessboard[row2][col2] = chess2;
         if(currentColor == ChessColor.RED){
             whoTurn.setText("BLACK TURN");
             whoTurn.setForeground(Color.BLACK);
@@ -326,6 +326,7 @@ public class ChessboardComponent extends JComponent {
                             initTestBoardSoldierRed(i, j, ChessColor.RED);
                             break;
                         case '.' :
+                            new EmptySlotComponent(new ChessboardPoint(i, j), calculatePoint(i, j));
                             break;
                     }
                 }

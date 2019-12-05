@@ -6,14 +6,34 @@ import xyz.chengzi.cs102a.chinesechess.listener.ChessboardChessListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ChessboardComponent extends JComponent {
     private ChessListener chessListener = new ChessboardChessListener(this);
     private ChessComponent[][] chessboard = new ChessComponent[10][9];
     private ChessColor currentColor = ChessColor.RED;
     private JLabel whoTurn;
+    private ArrayList<String> stringList = new ArrayList<String>();
+    private int move = 0;
+    private int n;
 
-    public ChessboardComponent(int width, int height,JLabel l) {
+    public void setCurrentColor(ChessColor currentColor) {
+        this.currentColor = currentColor;
+    }
+
+    public void setN(int n) {
+        this.n = n;
+    }
+
+    public int getMove() {
+        return move;
+    }
+
+    public int getN() {
+        return n;
+    }
+
+    public ChessboardComponent(int width, int height, JLabel l) {
         setLayout(null); // Use absolute layout.
         setSize(width, height);
         whoTurn = l;
@@ -76,6 +96,10 @@ public class ChessboardComponent extends JComponent {
         add(chessboard[row][col] = chessComponent);
     }
 
+    public JLabel getWhoTurn() {
+        return whoTurn;
+    }
+
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
         // Note that chess1 has higher priority, 'destroys' chess2 if exists.
         ChessComponent chess3 = chess2;
@@ -94,6 +118,10 @@ public class ChessboardComponent extends JComponent {
                     JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
             if(result == 0){
                 loadGame(initial());
+                currentColor = ChessColor.BLACK;
+                stringList.clear();
+                move = 0;
+                n = 0;
             }else if(result == 1){
                 System.exit(0);
             }
@@ -105,6 +133,9 @@ public class ChessboardComponent extends JComponent {
             if(result == 0){
                 loadGame(initial());
                 currentColor = ChessColor.BLACK;
+                stringList.clear();
+                move = 0;
+                n = 0;
             }else if(result == 1){
                 System.exit(0);
             }
@@ -116,7 +147,7 @@ public class ChessboardComponent extends JComponent {
             whoTurn.setText("RED TURN");
             whoTurn.setForeground(Color.RED);
         }
-        System.out.println(toString(chessboard));
+        System.out.println(toString());
     }
 
     public void swapColor() {
@@ -258,7 +289,8 @@ public class ChessboardComponent extends JComponent {
         return new Point(col * getWidth() / 9, row * getHeight() / 10);
     }
 
-    private void loadGame(char[][] arr1){
+    public void loadGame(String s){
+        char[][] arr1 = toCharArray(s);
         if(arr1.length != 11 || arr1[0].length != 9){
             System.out.println("Invalid Dimension");
         }else{
@@ -332,34 +364,51 @@ public class ChessboardComponent extends JComponent {
                     }
                 }
             }
+            repaint();
         }
     }
 
-    private static char[][] initial(){
-        char[][] c = new char[][]{
-            {'C','H','E','A','G','A','E','H','C'},
-            {'.','.','.','.','.','.','.','.','.'},
-            {'.','N','.','.','.','.','.','N','.'},
-            {'S','.','S','.','S','.','S','.','S'},
-            {'.','.','.','.','.','.','.','.','.'},
-            {'-','-','-','-','-','-','-','-','-'},
-            {'.','.','.','.','.','.','.','.','.'},
-            {'s','.','s','.','s','.','s','.','s'},
-            {'.','n','.','.','.','.','.','n','.'},
-            {'.','.','.','.','.','.','.','.','.'},
-            {'c','h','e','a','g','a','e','h','c'}
-        };
-        return c;
+    public final String initial(){
+        return "CHEAGAEHC..........N.....N.S.S.S.S.S..................s.s.s.s.s.n.....n..........cheagaehc";
     }
 
-    public String toString(ChessComponent[][] board){
+    public ArrayList<String> getStringList() {
+        return stringList;
+    }
+
+    @Override
+    public String toString(){
         String s = "";
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                s += board[i][j].getChessName();
+        for (int i = 0; i < this.chessboard.length; i++) {
+            for (int j = 0; j < this.chessboard[0].length; j++) {
+                s += this.chessboard[i][j].getChessName();
             }
         }
+        stringList.add(s);
+        move++;
         return s;
+    }
+
+    public char[][] toCharArray(String s){
+        char[][] result = new char[11][9];
+        char[] origin = s.toCharArray();
+        int k = 0;
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 9; j++) {
+                result[i][j] = origin[k];
+                k++;
+            }
+        }
+        for (int i = 0; i < 9; i++) {
+            result[5][i] = '-';
+        }
+        for (int i = 6; i < 11; i++) {
+            for (int j = 0; j < 9; j++) {
+                result[i][j] = origin[k];
+                k++;
+            }
+        }
+        return result;
     }
 
 }

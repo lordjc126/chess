@@ -5,6 +5,8 @@ import xyz.chengzi.cs102a.chinesechess.chessboard.ChessboardComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ChessGameFrame extends JFrame {
     public ChessGameFrame() {
@@ -28,6 +30,34 @@ public class ChessGameFrame extends JFrame {
         button.setLocation(370, 400);
         button.setSize(20, 10);
         add(button);
+
+        JMenuBar bar = new JMenuBar();
+        JMenuItem item = new JMenuItem("Undo");
+        bar.add(item);
+        setJMenuBar(bar);
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if(chessboard.getMove()-chessboard.getN() >= 2){
+                    chessboard.loadGame(chessboard.getStringList().get(chessboard.getMove()-2-chessboard.getN()));
+                    chessboard.setN(chessboard.getN()+1);
+                    if(chessboard.getCurrentColor()==ChessColor.RED){
+                        chessboard.setCurrentColor(ChessColor.BLACK);
+                        chessboard.getWhoTurn().setText("BLACK TURN");
+                        chessboard.getWhoTurn().setForeground(Color.BLACK);
+                    }else if(chessboard.getCurrentColor()==ChessColor.BLACK){
+                        chessboard.setCurrentColor(ChessColor.RED);
+                        chessboard.getWhoTurn().setText("RED TURN");
+                        chessboard.getWhoTurn().setForeground(Color.RED);
+                    }
+                }else if(chessboard.getMove()-chessboard.getN() == 1){
+                    chessboard.loadGame(chessboard.initial());
+                    chessboard.setCurrentColor(ChessColor.RED);
+                    chessboard.getWhoTurn().setText("RED TURN");
+                    chessboard.getWhoTurn().setForeground(Color.RED);
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {

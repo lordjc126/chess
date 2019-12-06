@@ -175,6 +175,9 @@ public class ChessboardComponent extends JComponent {
             n = 0;
         }
         System.out.println(toString());
+        System.out.println(move);
+        System.out.println(n);
+        System.out.println(stringList.size());
     }
 
     public void swapColor() {

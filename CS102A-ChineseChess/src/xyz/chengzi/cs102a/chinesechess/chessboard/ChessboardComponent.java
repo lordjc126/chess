@@ -14,7 +14,7 @@ public class ChessboardComponent extends JComponent {
     private ChessColor currentColor = ChessColor.RED;
     private JLabel whoTurn;
     private ArrayList<String> stringList = new ArrayList<String>();
-    private int move = 0;
+    private int move = 0;//动了多少步
     private int n;
     private boolean stopUndoing = false;
 

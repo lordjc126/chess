@@ -173,6 +173,7 @@ public class ChessboardComponent extends JComponent {
             }
             move = move-n;
             n = 0;
+            stopUndoing = false;
         }
         System.out.println(toString());
         System.out.println(move);

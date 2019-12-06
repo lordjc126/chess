@@ -33,7 +33,9 @@ public class ChessGameFrame extends JFrame {
 
         JMenuBar bar = new JMenuBar();
         JMenuItem item = new JMenuItem("Undo");
+        JMenuItem item2 = new JMenuItem("UndoUndo");
         bar.add(item);
+        bar.add(item2);
         setJMenuBar(bar);
         item.addActionListener(new ActionListener() {
             @Override
@@ -50,14 +52,37 @@ public class ChessGameFrame extends JFrame {
                         chessboard.getWhoTurn().setText("RED TURN");
                         chessboard.getWhoTurn().setForeground(Color.RED);
                     }
+                    chessboard.setStopUndoing(true);
                 }else if(chessboard.getMove()-chessboard.getN() == 1){
                     chessboard.loadGame(chessboard.initial());
                     chessboard.setCurrentColor(ChessColor.RED);
                     chessboard.getWhoTurn().setText("RED TURN");
                     chessboard.getWhoTurn().setForeground(Color.RED);
+                    chessboard.setN(chessboard.getN()+1);
+                    chessboard.setStopUndoing(true);
                 }
             }
         });
+
+        item2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if(chessboard.getN()>0){
+                    chessboard.loadGame(chessboard.getStringList().get(chessboard.getMove()-chessboard.getN()));
+                    chessboard.setN(chessboard.getN()-1);
+                    if(chessboard.getCurrentColor()==ChessColor.RED){
+                        chessboard.setCurrentColor(ChessColor.BLACK);
+                        chessboard.getWhoTurn().setText("BLACK TURN");
+                        chessboard.getWhoTurn().setForeground(Color.BLACK);
+                    }else if(chessboard.getCurrentColor()==ChessColor.BLACK){
+                        chessboard.setCurrentColor(ChessColor.RED);
+                        chessboard.getWhoTurn().setText("RED TURN");
+                        chessboard.getWhoTurn().setForeground(Color.RED);
+                    }
+                }
+            }
+        });
+
     }
 
     public static void main(String[] args) {

@@ -16,6 +16,7 @@ public class ChessboardComponent extends JComponent {
     private ArrayList<String> stringList = new ArrayList<String>();
     private int move = 0;
     private int n;
+    private boolean stopUndoing = false;
 
     //-------------------------------------------------------------------------------------------------getter and setter
 
@@ -54,6 +55,10 @@ public class ChessboardComponent extends JComponent {
 
     public final String initial(){
         return "CHEAGAEHC..........N.....N.S.S.S.S.S..................s.s.s.s.s.n.....n..........cheagaehc";
+    }
+
+    public void setStopUndoing(boolean stopUndoing) {
+        this.stopUndoing = stopUndoing;
     }
 
     //-----------------------------------------------------------------------------------------------------constructor
@@ -161,6 +166,13 @@ public class ChessboardComponent extends JComponent {
         }else{
             whoTurn.setText("RED TURN");
             whoTurn.setForeground(Color.RED);
+        }
+        if(stopUndoing){
+            for (int i = move-1; i >= move-n; i--) {
+                stringList.remove(i);
+            }
+            move = move-n;
+            n = 0;
         }
         System.out.println(toString());
     }

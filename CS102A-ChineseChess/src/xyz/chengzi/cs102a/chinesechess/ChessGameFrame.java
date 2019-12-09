@@ -36,8 +36,12 @@ public class ChessGameFrame extends JFrame {
         JMenuBar bar = new JMenuBar();
         JMenuItem item = new JMenuItem("Undo");
         JMenuItem item2 = new JMenuItem("UndoUndo");
+        JMenu file = new JMenu("file");
+        JMenuItem loadGame = new JMenuItem("load");
         bar.add(item);
         bar.add(item2);
+        bar.add(file);
+        file.add(loadGame);
         setJMenuBar(bar);
         item.addActionListener(new ActionListener() {
             @Override

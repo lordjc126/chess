@@ -50,7 +50,7 @@ public class MainFrame extends JFrame implements ActionListener {
         mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 100));
 
 
-        ImageIcon backgroundPicture = new ImageIcon("F:\\IDEA\\IntelliJ IDEA 2019.2.2\\ChineseChess\\untitled.png");
+        ImageIcon backgroundPicture = new ImageIcon("./untitled.png");
         JLabel background = new JLabel(backgroundPicture);
         background.setBounds(0, 0, backgroundPicture.getIconWidth(), backgroundPicture.getIconHeight());
         mainPanel.add(background);

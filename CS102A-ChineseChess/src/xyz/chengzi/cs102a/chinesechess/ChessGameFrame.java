@@ -5,9 +5,13 @@ import xyz.chengzi.cs102a.chinesechess.chess.MainFrame;
 import xyz.chengzi.cs102a.chinesechess.chessboard.ChessboardComponent;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.ArrayList;
 
 public class ChessGameFrame extends JFrame {
     public ChessGameFrame() {
@@ -86,6 +90,45 @@ public class ChessGameFrame extends JFrame {
                         chessboard.getWhoTurn().setForeground(Color.RED);
                     }
                 }
+            }
+        });
+
+        loadGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                    JFileChooser jfc = new JFileChooser("E:\\");
+                    FileFilter filter = new FileNameExtensionFilter("文本文件（txt)","txt");
+                    jfc.setFileFilter(filter);
+                    int i = jfc.showOpenDialog(getContentPane());
+                    if(i == JFileChooser.APPROVE_OPTION){
+                        File file = jfc.getSelectedFile();  //获取选中的文件
+                        try {
+                            FileReader fileReader = new FileReader(file);
+                            BufferedReader BufferedReader = new BufferedReader(fileReader);
+                            ArrayList<String> input = new ArrayList<>();
+                            String board = "";
+
+                            while((BufferedReader.readLine()) != null){
+                                input.add(BufferedReader.readLine());
+                            }
+                            System.out.println(input.get(0));
+                            if(input.get(0).equals("@LAST_MOVER=BLACK")){
+                                for (int j = 3; j < input.size(); j++) {
+                                    board += input.get(i);
+                                }
+                                System.out.println(board);
+                                chessboard.loadGame(board);
+                                chessboard.setCurrentColor(ChessColor.RED);
+                            }
+
+
+
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
             }
         });
 

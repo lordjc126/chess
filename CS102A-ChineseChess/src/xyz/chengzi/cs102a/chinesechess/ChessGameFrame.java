@@ -114,6 +114,7 @@ public class ChessGameFrame extends JFrame {
                             ArrayList<String> input = new ArrayList<>();
                             String str;
                             String board = "";
+                            boolean ifMissingRiver = true;
 
                             while((str = BufferedReader.readLine()) != null){
                                 input.add(str);
@@ -122,31 +123,65 @@ public class ChessGameFrame extends JFrame {
                                 for (int j = 3; j < input.size(); j++) {
                                     if(!(input.get(j).equals("---------"))){
                                         board += input.get(j);
+                                        ifMissingRiver = false;
                                     }
                                 }
-                                System.out.println(board);
-                                chessboard.loadGame(board);
-                                chessboard.setCurrentColor(ChessColor.RED);
-                                chessboard.setN(0);
-                                chessboard.setMove(0);
-                                chessboard.clearStringList();
-                                chessboard.getWhoTurn().setText("RED TURN");
-                                chessboard.getWhoTurn().setForeground(Color.RED);
+
+                                if(!ifMissingRiver){
+                                    JOptionPane.showMessageDialog(chessboard,"River Missing","error",
+                                            JOptionPane.PLAIN_MESSAGE);
+                                }else if(chessboard.judgeCase1(board) == 1){
+                                    JOptionPane.showMessageDialog(chessboard,"Space Missing","error",
+                                            JOptionPane.PLAIN_MESSAGE);
+                                }else if(chessboard.judgeCase1(board) == 2){
+                                    JOptionPane.showMessageDialog(chessboard,"Invalid Chess Amount","error",
+                                            JOptionPane.PLAIN_MESSAGE);
+                                }else if(chessboard.judgeCase1(board) == 3){
+                                    JOptionPane.showMessageDialog(chessboard,"Invalid Dimension","error",
+                                            JOptionPane.PLAIN_MESSAGE);
+                                }else{
+                                    System.out.println(board);
+                                    chessboard.loadGame(board);
+                                    chessboard.setCurrentColor(ChessColor.RED);
+                                    chessboard.setN(0);
+                                    chessboard.setMove(0);
+                                    chessboard.clearStringList();
+                                    chessboard.getWhoTurn().setText("RED TURN");
+                                    chessboard.getWhoTurn().setForeground(Color.RED);
+                                }
+
 
                             }else if(input.get(0).equals("@LAST_MOVER=RED")){
                                 for (int j = 3; j < input.size(); j++) {
                                     if(!(input.get(j).equals("---------"))){
                                         board += input.get(j);
+                                        ifMissingRiver = false;
                                     }
                                 }
-                                System.out.println(board);
-                                chessboard.loadGame(board);
-                                chessboard.setCurrentColor(ChessColor.BLACK);
-                                chessboard.setN(0);
-                                chessboard.setMove(0);
-                                chessboard.clearStringList();
-                                chessboard.getWhoTurn().setText("BLACK TURN");
-                                chessboard.getWhoTurn().setForeground(Color.BLACK);
+
+                                if(!ifMissingRiver){
+                                    JOptionPane.showMessageDialog(chessboard,"River Missing","error",
+                                            JOptionPane.PLAIN_MESSAGE);
+                                }else if(chessboard.judgeCase1(board) == 1){
+                                    JOptionPane.showMessageDialog(chessboard,"Space Missing","error",
+                                            JOptionPane.PLAIN_MESSAGE);
+                                }else if(chessboard.judgeCase1(board) == 2){
+                                    JOptionPane.showMessageDialog(chessboard,"Invalid Chess Amount","error",
+                                            JOptionPane.PLAIN_MESSAGE);
+                                }else if(chessboard.judgeCase1(board) == 3){
+                                    JOptionPane.showMessageDialog(chessboard,"Invalid Dimension","error",
+                                            JOptionPane.PLAIN_MESSAGE);
+                                }else{
+                                    System.out.println(board);
+                                    chessboard.loadGame(board);
+                                    chessboard.setCurrentColor(ChessColor.BLACK);
+                                    chessboard.setN(0);
+                                    chessboard.setMove(0);
+                                    chessboard.clearStringList();
+                                    chessboard.getWhoTurn().setText("BLACK TURN");
+                                    chessboard.getWhoTurn().setForeground(Color.BLACK);
+                                }
+
                             }
 
                             BufferedReader.close();

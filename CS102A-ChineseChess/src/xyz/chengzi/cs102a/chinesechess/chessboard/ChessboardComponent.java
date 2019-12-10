@@ -7,6 +7,7 @@ import xyz.chengzi.cs102a.chinesechess.listener.ChessboardChessListener;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ChessboardComponent extends JComponent {
     private ChessListener chessListener = new ChessboardChessListener(this);
@@ -448,6 +449,74 @@ public class ChessboardComponent extends JComponent {
             }
         }
         return result;
+    }
+
+    public int judgeCase1(String s){
+        char[] c = s.toCharArray();
+        boolean ifSpaceMissing = true;
+        int[] compare = {2,2,2,2,1,2,5};
+        int[] red = new int[7];
+        int[] black = new int[7];
+
+        for (int i = 0; i < c.length; i++) {
+            if(c[i] == '.'){
+                ifSpaceMissing = false;
+            }else{
+                switch (c[i]){
+                    case 'C':
+                        black[0] ++;
+                        break;
+                    case 'H':
+                        black[1] ++;
+                        break;
+                    case 'E':
+                        black[2] ++;
+                        break;
+                    case 'A':
+                        black[3] ++;
+                        break;
+                    case 'G':
+                        black[4] ++;
+                        break;
+                    case 'N':
+                        black[5] ++;
+                        break;
+                    case 'S':
+                        black[6] ++;
+                        break;
+                    case 'c':
+                        red[0] ++;
+                        break;
+                    case 'h':
+                        red[1] ++;
+                        break;
+                    case 'e':
+                        red[2] ++;
+                        break;
+                    case 'a':
+                        red[3] ++;
+                        break;
+                    case 'g':
+                        red[4] ++;
+                        break;
+                    case 'n':
+                        red[5] ++;
+                        break;
+                    case 's':
+                        red[6] ++;
+                        break;
+                }
+            }
+        }
+
+        if(ifSpaceMissing){
+            return 1;
+        }else if(Arrays.equals(compare,red) || Arrays.equals(compare,black)){
+            return 2;
+        }else if(s.length() != 90){
+            return 3;
+        }
+        return 0;
     }
 
 }

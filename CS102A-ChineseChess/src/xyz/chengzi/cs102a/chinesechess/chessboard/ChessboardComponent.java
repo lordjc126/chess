@@ -511,7 +511,7 @@ public class ChessboardComponent extends JComponent {
 
         if(ifSpaceMissing){
             return 1;
-        }else if(Arrays.equals(compare,red) || Arrays.equals(compare,black)){
+        }else if(!Arrays.equals(compare,red) || !Arrays.equals(compare,black)){
             return 2;
         }else if(s.length() != 90){
             return 3;

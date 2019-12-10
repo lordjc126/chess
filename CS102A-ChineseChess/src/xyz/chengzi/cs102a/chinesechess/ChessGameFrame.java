@@ -130,6 +130,9 @@ public class ChessGameFrame extends JFrame {
                                 chessboard.setN(0);
                                 chessboard.setMove(0);
                                 chessboard.clearStringList();
+                                chessboard.getWhoTurn().setText("RED TURN");
+                                chessboard.getWhoTurn().setForeground(Color.RED);
+
                             }else if(input.get(0).equals("@LAST_MOVER=RED")){
                                 for (int j = 3; j < input.size(); j++) {
                                     if(!(input.get(j).equals("---------"))){
@@ -142,6 +145,8 @@ public class ChessGameFrame extends JFrame {
                                 chessboard.setN(0);
                                 chessboard.setMove(0);
                                 chessboard.clearStringList();
+                                chessboard.getWhoTurn().setText("BLACK TURN");
+                                chessboard.getWhoTurn().setForeground(Color.BLACK);
                             }
 
                             BufferedReader.close();
@@ -165,6 +170,8 @@ public class ChessGameFrame extends JFrame {
                 chessboard.setN(0);
                 chessboard.setMove(0);
                 chessboard.clearStringList();
+                chessboard.getWhoTurn().setText("RED TURN");
+                chessboard.getWhoTurn().setForeground(Color.RED);
             }
         });
 

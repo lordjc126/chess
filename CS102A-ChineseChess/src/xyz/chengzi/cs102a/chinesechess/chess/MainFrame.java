@@ -25,6 +25,7 @@ public class MainFrame extends JFrame implements ActionListener {
         setTitle("Java Project: Chinese Chess");
         setSize(430, 1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         mainPanel = new JPanel();
         mainPanel.setOpaque(false);
 

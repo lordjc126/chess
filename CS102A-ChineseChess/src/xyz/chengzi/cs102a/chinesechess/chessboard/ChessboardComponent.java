@@ -61,6 +61,14 @@ public class ChessboardComponent extends JComponent {
         this.stopUndoing = stopUndoing;
     }
 
+    public void setMove(int move) {
+        this.move = move;
+    }
+
+    public void clearStringList(){
+        stringList.clear();
+    }
+
     //-----------------------------------------------------------------------------------------------------constructor
 
     public ChessboardComponent(int width, int height, JLabel l) {

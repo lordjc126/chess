@@ -106,22 +106,28 @@ public class ChessGameFrame extends JFrame {
                             FileReader fileReader = new FileReader(file);
                             BufferedReader BufferedReader = new BufferedReader(fileReader);
                             ArrayList<String> input = new ArrayList<>();
+                            String str;
                             String board = "";
 
-                            while((BufferedReader.readLine()) != null){
-                                input.add(BufferedReader.readLine());
+                            while((str = BufferedReader.readLine()) != null){
+                                input.add(str);
                             }
-                            System.out.println(input.get(0));
                             if(input.get(0).equals("@LAST_MOVER=BLACK")){
                                 for (int j = 3; j < input.size(); j++) {
-                                    board += input.get(i);
+                                    if(!(input.get(j).equals("---------"))){
+                                        board += input.get(j);
+                                    }
                                 }
                                 System.out.println(board);
                                 chessboard.loadGame(board);
                                 chessboard.setCurrentColor(ChessColor.RED);
+                                chessboard.setN(0);
+                                chessboard.setMove(0);
+                                chessboard.clearStringList();
                             }
 
-
+                            BufferedReader.close();
+                            fileReader.close();
 
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();

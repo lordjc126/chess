@@ -27,7 +27,6 @@ public class ChessboardChessListener extends ChessListener {
             } else if (handleSecond(chessComponent)) {
                 chessboardComponent.swapChessComponents(first, chessComponent);
                 chessboardComponent.swapColor();
-
                 first.setSelected(false);
                 first = null;
                 chessboardComponent.repaint();

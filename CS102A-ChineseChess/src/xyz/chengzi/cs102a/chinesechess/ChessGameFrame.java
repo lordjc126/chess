@@ -1,8 +1,8 @@
 package xyz.chengzi.cs102a.chinesechess;
 
 import xyz.chengzi.cs102a.chinesechess.chess.ChessColor;
-import xyz.chengzi.cs102a.chinesechess.chess.MainFrame;
 import xyz.chengzi.cs102a.chinesechess.chessboard.ChessboardComponent;
+import xyz.chengzi.cs102a.chinesechess.listener.Timekeeper;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -10,25 +10,70 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.*;
 import java.util.ArrayList;
 
 public class ChessGameFrame extends JFrame {
+    private JLabel statusLabel;
+    private int x = 450;
+    private int y = 550;
+
+    @Override
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    @Override
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public JLabel getStatusLabel() {
+        return statusLabel;
+    }
+
     public ChessGameFrame() {
         setTitle("Chinese Chess");
-        setSize(450, 550);
+        setSize(x, y);
         setLocationRelativeTo(null); // Center the window.
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
         setBak();
 
-        JLabel statusLabel = new JLabel("RED TURN");
+
+        statusLabel = new JLabel("RED TURN");
         Font f = new Font("华文行楷", Font.BOLD, 20);//设置字体大小
         statusLabel.setFont(f);
         statusLabel.setForeground(Color.RED);
         statusLabel.setLocation(0, 400);
         statusLabel.setSize(200, 30);
+
         ChessboardComponent chessboard = new ChessboardComponent(400, 400, statusLabel);
+        addComponentListener(new ComponentAdapter(){
+            public void componentResized(ComponentEvent e) {
+                int windowWidth = getWidth();
+                int windowHeight = getHeight();
+                chessboard.setChessboardSize(windowWidth-50,windowHeight-100);
+                if(chessboard.getStringList().size() != 0) {
+                    chessboard.loadGame(chessboard.getStringList().get(chessboard.getMove()-1));
+                }else{
+                    chessboard.loadGame(chessboard.initial());
+                }
+                chessboard.repaint();
+                System.out.println("shit");
+            }
+        });
+
         add(chessboard);
         add(statusLabel);
 
@@ -103,99 +148,99 @@ public class ChessGameFrame extends JFrame {
         loadGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                    JFileChooser jfc = new JFileChooser("E:\\");
-                    FileFilter filter = new FileNameExtensionFilter("文本文件（txt)","txt");
-                    jfc.setFileFilter(filter);
-                    int i = jfc.showOpenDialog(getContentPane());
-                    if(i == JFileChooser.APPROVE_OPTION){
-                        File file = jfc.getSelectedFile();  //获取选中的文件
-                        try {
-                            FileReader fileReader = new FileReader(file);
-                            BufferedReader BufferedReader = new BufferedReader(fileReader);
-                            ArrayList<String> input = new ArrayList<>();
-                            String str;
-                            String board = "";
-                            boolean ifMissingRiver = true;
+                JFileChooser jfc = new JFileChooser("E:\\");
+                FileFilter filter = new FileNameExtensionFilter("文本文件（txt)", "txt");
+                jfc.setFileFilter(filter);
+                int i = jfc.showOpenDialog(getContentPane());
+                if (i == JFileChooser.APPROVE_OPTION) {
+                    File file = jfc.getSelectedFile();  //获取选中的文件
+                    try {
+                        FileReader fileReader = new FileReader(file);
+                        BufferedReader BufferedReader = new BufferedReader(fileReader);
+                        ArrayList<String> input = new ArrayList<>();
+                        String str;
+                        String board = "";
+                        boolean ifMissingRiver = true;
 
-                            while((str = BufferedReader.readLine()) != null){
-                                input.add(str);
-                            }
-                            if(input.get(0).equals("@LAST_MOVER=BLACK")){
-                                for (int j = 3; j < input.size(); j++) {
-                                    if(!(input.get(j).equals("---------"))){
-                                        board += input.get(j);
-                                    }else{
-                                        ifMissingRiver = false;
-                                    }
-                                }
-
-                                if(ifMissingRiver){
-                                    JOptionPane.showMessageDialog(chessboard,"River Missing","error",
-                                            JOptionPane.PLAIN_MESSAGE);
-                                }else if(chessboard.judgeCase1(board) == 1){
-                                    JOptionPane.showMessageDialog(chessboard,"Space Missing","error",
-                                            JOptionPane.PLAIN_MESSAGE);
-                                }else if(chessboard.judgeCase1(board) == 2){
-                                    JOptionPane.showMessageDialog(chessboard,"Invalid Chess Amount","error",
-                                            JOptionPane.PLAIN_MESSAGE);
-                                }else if(chessboard.judgeCase1(board) == 3){
-                                    JOptionPane.showMessageDialog(chessboard,"Invalid Dimension","error",
-                                            JOptionPane.PLAIN_MESSAGE);
-                                }else{
-                                    System.out.println(board);
-                                    chessboard.loadGame(board);
-                                    chessboard.setCurrentColor(ChessColor.RED);
-                                    chessboard.setN(0);
-                                    chessboard.setMove(0);
-                                    chessboard.clearStringList();
-                                    chessboard.getWhoTurn().setText("RED TURN");
-                                    chessboard.getWhoTurn().setForeground(Color.RED);
-                                }
-
-
-                            }else if(input.get(0).equals("@LAST_MOVER=RED")){
-                                for (int j = 3; j < input.size(); j++) {
-                                    if(!(input.get(j).equals("---------"))){
-                                        board += input.get(j);
-                                    }else{
-                                        ifMissingRiver = false;
-                                    }
-                                }
-
-                                if(ifMissingRiver){
-                                    JOptionPane.showMessageDialog(chessboard,"River Missing","error",
-                                            JOptionPane.PLAIN_MESSAGE);
-                                }else if(chessboard.judgeCase1(board) == 1){
-                                    JOptionPane.showMessageDialog(chessboard,"Space Missing","error",
-                                            JOptionPane.PLAIN_MESSAGE);
-                                }else if(chessboard.judgeCase1(board) == 2){
-                                    JOptionPane.showMessageDialog(chessboard,"Invalid Chess Amount","error",
-                                            JOptionPane.PLAIN_MESSAGE);
-                                }else if(chessboard.judgeCase1(board) == 3){
-                                    JOptionPane.showMessageDialog(chessboard,"Invalid Dimension","error",
-                                            JOptionPane.PLAIN_MESSAGE);
-                                }else{
-                                    System.out.println(board);
-                                    chessboard.loadGame(board);
-                                    chessboard.setCurrentColor(ChessColor.BLACK);
-                                    chessboard.setN(0);
-                                    chessboard.setMove(0);
-                                    chessboard.clearStringList();
-                                    chessboard.getWhoTurn().setText("BLACK TURN");
-                                    chessboard.getWhoTurn().setForeground(Color.BLACK);
-                                }
-
-                            }
-
-                            BufferedReader.close();
-                            fileReader.close();
-
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        while ((str = BufferedReader.readLine()) != null) {
+                            input.add(str);
                         }
+                        if (input.get(0).equals("@LAST_MOVER=BLACK")) {
+                            for (int j = 3; j < input.size(); j++) {
+                                if (!(input.get(j).equals("---------"))) {
+                                    board += input.get(j);
+                                } else {
+                                    ifMissingRiver = false;
+                                }
+                            }
+
+                            if (ifMissingRiver) {
+                                JOptionPane.showMessageDialog(chessboard, "River Missing", "error",
+                                        JOptionPane.PLAIN_MESSAGE);
+                            } else if (chessboard.judgeCase1(board) == 1) {
+                                JOptionPane.showMessageDialog(chessboard, "Space Missing", "error",
+                                        JOptionPane.PLAIN_MESSAGE);
+                            } else if (chessboard.judgeCase1(board) == 2) {
+                                JOptionPane.showMessageDialog(chessboard, "Invalid Chess Amount", "error",
+                                        JOptionPane.PLAIN_MESSAGE);
+                            } else if (chessboard.judgeCase1(board) == 3) {
+                                JOptionPane.showMessageDialog(chessboard, "Invalid Dimension", "error",
+                                        JOptionPane.PLAIN_MESSAGE);
+                            } else {
+                                System.out.println(board);
+                                chessboard.loadGame(board);
+                                chessboard.setCurrentColor(ChessColor.RED);
+                                chessboard.setN(0);
+                                chessboard.setMove(0);
+                                chessboard.clearStringList();
+                                chessboard.getWhoTurn().setText("RED TURN");
+                                chessboard.getWhoTurn().setForeground(Color.RED);
+                            }
+
+
+                        } else if (input.get(0).equals("@LAST_MOVER=RED")) {
+                            for (int j = 3; j < input.size(); j++) {
+                                if (!(input.get(j).equals("---------"))) {
+                                    board += input.get(j);
+                                } else {
+                                    ifMissingRiver = false;
+                                }
+                            }
+
+                            if (ifMissingRiver) {
+                                JOptionPane.showMessageDialog(chessboard, "River Missing", "error",
+                                        JOptionPane.PLAIN_MESSAGE);
+                            } else if (chessboard.judgeCase1(board) == 1) {
+                                JOptionPane.showMessageDialog(chessboard, "Space Missing", "error",
+                                        JOptionPane.PLAIN_MESSAGE);
+                            } else if (chessboard.judgeCase1(board) == 2) {
+                                JOptionPane.showMessageDialog(chessboard, "Invalid Chess Amount", "error",
+                                        JOptionPane.PLAIN_MESSAGE);
+                            } else if (chessboard.judgeCase1(board) == 3) {
+                                JOptionPane.showMessageDialog(chessboard, "Invalid Dimension", "error",
+                                        JOptionPane.PLAIN_MESSAGE);
+                            } else {
+                                System.out.println(board);
+                                chessboard.loadGame(board);
+                                chessboard.setCurrentColor(ChessColor.BLACK);
+                                chessboard.setN(0);
+                                chessboard.setMove(0);
+                                chessboard.clearStringList();
+                                chessboard.getWhoTurn().setText("BLACK TURN");
+                                chessboard.getWhoTurn().setForeground(Color.BLACK);
+                            }
+
+                        }
+
+                        BufferedReader.close();
+                        fileReader.close();
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                }
             }
         });
 
@@ -216,10 +261,9 @@ public class ChessGameFrame extends JFrame {
     }
 
 
-
-    private void setBak(){
-        ((JPanel)this.getContentPane()).setOpaque(false);
-        ImageIcon img = new ImageIcon("./bb49ff0a85b0d20c7fa6d9e7d2faeb2d.jpg");
+    private void setBak() {
+        ((JPanel) this.getContentPane()).setOpaque(false);
+        ImageIcon img = new ImageIcon("./untitled1.png");
         JLabel background = new JLabel(img);
         this.getLayeredPane().add(background, new Integer(Integer.MIN_VALUE));
         background.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());

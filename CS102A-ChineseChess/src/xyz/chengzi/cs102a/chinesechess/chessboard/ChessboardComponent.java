@@ -1,5 +1,6 @@
 package xyz.chengzi.cs102a.chinesechess.chessboard;
 
+import xyz.chengzi.cs102a.chinesechess.ChessGameFrame;
 import xyz.chengzi.cs102a.chinesechess.chess.*;
 import xyz.chengzi.cs102a.chinesechess.listener.ChessListener;
 import xyz.chengzi.cs102a.chinesechess.listener.ChessboardChessListener;
@@ -19,8 +20,9 @@ public class ChessboardComponent extends JComponent {
     private int n;
     private boolean stopUndoing = false;
 
-    //-------------------------------------------------------------------------------------------------getter and setter
 
+
+//-------------------------------------------------------------------------------------------------getter and setter
 
     public void setCurrentColor(ChessColor currentColor) {
         this.currentColor = currentColor;
@@ -54,7 +56,7 @@ public class ChessboardComponent extends JComponent {
         return stringList;
     }
 
-    public final String initial(){
+    public final String initial() {
         return "CHEAGAEHC..........N.....N.S.S.S.S.S..................s.s.s.s.s.n.....n..........cheagaehc";
     }
 
@@ -66,7 +68,7 @@ public class ChessboardComponent extends JComponent {
         this.move = move;
     }
 
-    public void clearStringList(){
+    public void clearStringList() {
         stringList.clear();
     }
 
@@ -119,6 +121,13 @@ public class ChessboardComponent extends JComponent {
         initTestBoardSoldierRed(6, 8, ChessColor.RED);
     }
 
+    public void setChessboardSize(int x, int y) {
+        this.setSize(x, y);
+        System.out.println(getWidth() +" "+ getHeight());
+    }
+
+    //----------------------------------------------------------------------------------------------------------initialize
+
     public void putChessOnBoard(ChessComponent chessComponent) {
         int row = chessComponent.getChessboardPoint().getX(), col = chessComponent.getChessboardPoint().getY();
         if (chessboard[row][col] != null) {
@@ -141,46 +150,46 @@ public class ChessboardComponent extends JComponent {
         chessboard[row1][col1] = chess1;
         int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
         chessboard[row2][col2] = chess2;
-        if(chess3.getChessName().equals("g")){
-            Object[] options = {"再来一局","退出"};
-            int result = JOptionPane.showOptionDialog(this, "BLACK WIN!", "WIN",JOptionPane.YES_OPTION,
+        if (chess3.getChessName().equals("g")) {
+            Object[] options = {"再来一局", "退出"};
+            int result = JOptionPane.showOptionDialog(this, "BLACK WIN!", "WIN", JOptionPane.YES_OPTION,
                     JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-            if(result == 0){
+            if (result == 0) {
                 loadGame(initial());
                 currentColor = ChessColor.BLACK;
                 stringList.clear();
                 move = 0;
                 n = 0;
-            }else if(result == 1){
+            } else if (result == 1) {
                 System.exit(0);
             }
         }
-        if(chess3.getChessName().equals("G")){
-            Object[] options = {"再来一局","退出"};
-            int result = JOptionPane.showOptionDialog(this, "RED WIN!", "WIN",JOptionPane.YES_OPTION,
+        if (chess3.getChessName().equals("G")) {
+            Object[] options = {"再来一局", "退出"};
+            int result = JOptionPane.showOptionDialog(this, "RED WIN!", "WIN", JOptionPane.YES_OPTION,
                     JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-            if(result == 0){
+            if (result == 0) {
                 loadGame(initial());
                 currentColor = ChessColor.BLACK;
                 stringList.clear();
                 move = 0;
                 n = 0;
-            }else if(result == 1){
+            } else if (result == 1) {
                 System.exit(0);
             }
         }
-        if(currentColor == ChessColor.RED){
+        if (currentColor == ChessColor.RED) {
             whoTurn.setText("BLACK TURN");
             whoTurn.setForeground(Color.BLACK);
-        }else{
+        } else {
             whoTurn.setText("RED TURN");
             whoTurn.setForeground(Color.RED);
         }
-        if(stopUndoing){
-            for (int i = move-1; i >= move-n; i--) {
+        if (stopUndoing) {
+            for (int i = move - 1; i >= move - n; i--) {
                 stringList.remove(i);
             }
-            move = move-n;
+            move = move - n;
             n = 0;
             stopUndoing = false;
         }
@@ -335,11 +344,11 @@ public class ChessboardComponent extends JComponent {
 
     //--------------------------------------------------------------------------------------------------loadgame
 
-    public void loadGame(String s){
+    public void loadGame(String s) {
         char[][] arr1 = toCharArray(s);
-        if(arr1.length != 11 || arr1[0].length != 9){
+        if (arr1.length != 11 || arr1[0].length != 9) {
             System.out.println("Invalid Dimension");
-        }else{
+        } else {
             char[][] arr = new char[10][9];
 
             for (int i = 0; i < 5; i++) {
@@ -350,7 +359,7 @@ public class ChessboardComponent extends JComponent {
 
             for (int i = 6; i < 11; i++) {
                 for (int j = 0; j < 9; j++) {
-                    arr[i-1][j] = arr1[i][j];
+                    arr[i - 1][j] = arr1[i][j];
                 }
             }
             for (int i = 0; i < 10; i++) {
@@ -361,50 +370,50 @@ public class ChessboardComponent extends JComponent {
 
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 9; j++) {
-                    switch (arr[i][j]){
-                        case 'C' :
+                    switch (arr[i][j]) {
+                        case 'C':
                             initTestBoardC(i, j, ChessColor.BLACK);
                             break;
-                        case 'c' :
+                        case 'c':
                             initTestBoardc(i, j, ChessColor.RED);
                             break;
-                        case 'G' :
+                        case 'G':
                             initTestBoardBossBlack(i, j, ChessColor.BLACK);
                             break;
-                        case 'g' :
+                        case 'g':
                             initTestBoardBossRed(i, j, ChessColor.RED);
                             break;
-                        case 'A' :
+                        case 'A':
                             initTestBoardShiRBlack(i, j, ChessColor.BLACK);
                             break;
-                        case 'a' :
+                        case 'a':
                             initTestBoardShiRed(i, j, ChessColor.RED);
                             break;
-                        case 'E' :
+                        case 'E':
                             initTestBoardEleBlack(i, j, ChessColor.BLACK);
                             break;
-                        case 'e' :
+                        case 'e':
                             initTestBoardEleRed(i, j, ChessColor.RED);
                             break;
-                        case 'H' :
+                        case 'H':
                             initTestBoardHorseBlack(i, j, ChessColor.BLACK);
                             break;
-                        case 'h' :
+                        case 'h':
                             initTestBoardHorseRed(i, j, ChessColor.RED);
                             break;
-                        case 'N' :
+                        case 'N':
                             initTestBoardPaoBlack(i, j, ChessColor.BLACK);
                             break;
-                        case 'n' :
+                        case 'n':
                             initTestBoardPaoRed(i, j, ChessColor.RED);
                             break;
-                        case 'S' :
+                        case 'S':
                             initTestBoardSoldierBlack(i, j, ChessColor.BLACK);
                             break;
-                        case 's' :
+                        case 's':
                             initTestBoardSoldierRed(i, j, ChessColor.RED);
                             break;
-                        case '.' :
+                        case '.':
                             new EmptySlotComponent(new ChessboardPoint(i, j), calculatePoint(i, j));
                             break;
                     }
@@ -417,7 +426,7 @@ public class ChessboardComponent extends JComponent {
     //-----------------------------------------------------------------------------------------------to method
 
     @Override
-    public String toString(){
+    public String toString() {
         String s = "";
         for (int i = 0; i < this.chessboard.length; i++) {
             for (int j = 0; j < this.chessboard[0].length; j++) {
@@ -429,7 +438,7 @@ public class ChessboardComponent extends JComponent {
         return s;
     }
 
-    public char[][] toCharArray(String s){
+    public char[][] toCharArray(String s) {
         char[][] result = new char[11][9];
         char[] origin = s.toCharArray();
         int k = 0;
@@ -451,69 +460,69 @@ public class ChessboardComponent extends JComponent {
         return result;
     }
 
-    public int judgeCase1(String s){
+    public int judgeCase1(String s) {
         char[] c = s.toCharArray();
         boolean ifSpaceMissing = true;
-        int[] compare = {2,2,2,2,1,2,5};
+        int[] compare = {2, 2, 2, 2, 1, 2, 5};
         int[] red = new int[7];
         int[] black = new int[7];
 
         for (int i = 0; i < c.length; i++) {
-            if(c[i] == '.'){
+            if (c[i] == '.') {
                 ifSpaceMissing = false;
-            }else{
-                switch (c[i]){
+            } else {
+                switch (c[i]) {
                     case 'C':
-                        black[0] ++;
+                        black[0]++;
                         break;
                     case 'H':
-                        black[1] ++;
+                        black[1]++;
                         break;
                     case 'E':
-                        black[2] ++;
+                        black[2]++;
                         break;
                     case 'A':
-                        black[3] ++;
+                        black[3]++;
                         break;
                     case 'G':
-                        black[4] ++;
+                        black[4]++;
                         break;
                     case 'N':
-                        black[5] ++;
+                        black[5]++;
                         break;
                     case 'S':
-                        black[6] ++;
+                        black[6]++;
                         break;
                     case 'c':
-                        red[0] ++;
+                        red[0]++;
                         break;
                     case 'h':
-                        red[1] ++;
+                        red[1]++;
                         break;
                     case 'e':
-                        red[2] ++;
+                        red[2]++;
                         break;
                     case 'a':
-                        red[3] ++;
+                        red[3]++;
                         break;
                     case 'g':
-                        red[4] ++;
+                        red[4]++;
                         break;
                     case 'n':
-                        red[5] ++;
+                        red[5]++;
                         break;
                     case 's':
-                        red[6] ++;
+                        red[6]++;
                         break;
                 }
             }
         }
 
-        if(ifSpaceMissing){
+        if (ifSpaceMissing) {
             return 1;
-        }else if(!Arrays.equals(compare,red) || !Arrays.equals(compare,black)){
+        } else if (!Arrays.equals(compare, red) || !Arrays.equals(compare, black)) {
             return 2;
-        }else if(s.length() != 90){
+        } else if (s.length() != 90) {
             return 3;
         }
         return 0;

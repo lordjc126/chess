@@ -123,11 +123,12 @@ public class ChessGameFrame extends JFrame {
                                 for (int j = 3; j < input.size(); j++) {
                                     if(!(input.get(j).equals("---------"))){
                                         board += input.get(j);
+                                    }else{
                                         ifMissingRiver = false;
                                     }
                                 }
 
-                                if(!ifMissingRiver){
+                                if(ifMissingRiver){
                                     JOptionPane.showMessageDialog(chessboard,"River Missing","error",
                                             JOptionPane.PLAIN_MESSAGE);
                                 }else if(chessboard.judgeCase1(board) == 1){
@@ -155,11 +156,12 @@ public class ChessGameFrame extends JFrame {
                                 for (int j = 3; j < input.size(); j++) {
                                     if(!(input.get(j).equals("---------"))){
                                         board += input.get(j);
+                                    }else{
                                         ifMissingRiver = false;
                                     }
                                 }
 
-                                if(!ifMissingRiver){
+                                if(ifMissingRiver){
                                     JOptionPane.showMessageDialog(chessboard,"River Missing","error",
                                             JOptionPane.PLAIN_MESSAGE);
                                 }else if(chessboard.judgeCase1(board) == 1){

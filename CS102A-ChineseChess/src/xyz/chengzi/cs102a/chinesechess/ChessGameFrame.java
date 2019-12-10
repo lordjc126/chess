@@ -41,12 +41,16 @@ public class ChessGameFrame extends JFrame {
         JMenuItem item = new JMenuItem("Undo");
         JMenuItem item2 = new JMenuItem("UndoUndo");
         JMenu file = new JMenu("file");
+        JMenuItem initialGame = new JMenuItem("initialize");
         JMenuItem loadGame = new JMenuItem("load");
         bar.add(item);
         bar.add(item2);
         bar.add(file);
+        file.add(initialGame);
         file.add(loadGame);
         setJMenuBar(bar);
+
+
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -74,6 +78,7 @@ public class ChessGameFrame extends JFrame {
             }
         });
 
+
         item2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -92,6 +97,7 @@ public class ChessGameFrame extends JFrame {
                 }
             }
         });
+
 
         loadGame.addActionListener(new ActionListener() {
             @Override
@@ -124,6 +130,18 @@ public class ChessGameFrame extends JFrame {
                                 chessboard.setN(0);
                                 chessboard.setMove(0);
                                 chessboard.clearStringList();
+                            }else if(input.get(0).equals("@LAST_MOVER=RED")){
+                                for (int j = 3; j < input.size(); j++) {
+                                    if(!(input.get(j).equals("---------"))){
+                                        board += input.get(j);
+                                    }
+                                }
+                                System.out.println(board);
+                                chessboard.loadGame(board);
+                                chessboard.setCurrentColor(ChessColor.BLACK);
+                                chessboard.setN(0);
+                                chessboard.setMove(0);
+                                chessboard.clearStringList();
                             }
 
                             BufferedReader.close();
@@ -135,6 +153,18 @@ public class ChessGameFrame extends JFrame {
                             e.printStackTrace();
                         }
                     }
+            }
+        });
+
+
+        initialGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                chessboard.loadGame(chessboard.initial());
+                chessboard.setCurrentColor(ChessColor.RED);
+                chessboard.setN(0);
+                chessboard.setMove(0);
+                chessboard.clearStringList();
             }
         });
 

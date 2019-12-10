@@ -16,10 +16,11 @@ import java.util.ArrayList;
 public class ChessGameFrame extends JFrame {
     public ChessGameFrame() {
         setTitle("Chinese Chess");
-        setSize(411, 500);
+        setSize(450, 550);
         setLocationRelativeTo(null); // Center the window.
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
+        setBak();
 
         JLabel statusLabel = new JLabel("RED TURN");
         Font f = new Font("华文行楷", Font.BOLD, 20);//设置字体大小
@@ -214,6 +215,15 @@ public class ChessGameFrame extends JFrame {
 
     }
 
+
+
+    private void setBak(){
+        ((JPanel)this.getContentPane()).setOpaque(false);
+        ImageIcon img = new ImageIcon("./bb49ff0a85b0d20c7fa6d9e7d2faeb2d.jpg");
+        JLabel background = new JLabel(img);
+        this.getLayeredPane().add(background, new Integer(Integer.MIN_VALUE));
+        background.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
+    }
     /*public static void main(String[] args) {
         MainFrame mainFrame = new MainFrame();
         SwingUtilities.invokeLater(() ->

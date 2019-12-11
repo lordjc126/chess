@@ -63,12 +63,11 @@ public class MainFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==button1)
-        {
+        if (e.getSource() == button1) {
             this.dispose();//点击按钮时frame1销毁,new一个frame2
             ChessGameFrame chessFrame = new ChessGameFrame();
             chessFrame.setVisible(true);
-            chessFrame.addComponentListener(new ComponentAdapter(){
+            chessFrame.addComponentListener(new ComponentAdapter() {
                 public void componentResized(ComponentEvent e) {
                     int windowWidth = chessFrame.getWidth();
                     int windowHeight = chessFrame.getHeight();
@@ -78,18 +77,16 @@ public class MainFrame extends JFrame implements ActionListener {
             });
 
 
-
-        }
-        else if(e.getSource()==button3){
+        } else if (e.getSource() == button3) {
             this.dispose();
         }
     }
 
 //----------------------------------------------------------------------------------------------
 
-    private void setBak(){
+    private void setBak() {
 
-        ((JPanel)this.getContentPane()).setOpaque(false);
+        ((JPanel) this.getContentPane()).setOpaque(false);
         ImageIcon img = new ImageIcon("./11814432_144606674188_2 - 副本.jpg");
         JLabel background = new JLabel(img);
         this.getLayeredPane().add(background, new Integer(Integer.MIN_VALUE));
@@ -97,21 +94,19 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-Music BGM = new Music();
-BGM.start();
-        try
-        {
+        Music2 BGM = new Music2();
+        BGM.start();
+        try {
             BeautyEyeLNFHelper.frameBorderStyle = BeautyEyeLNFHelper.FrameBorderStyle.translucencyAppleLike;
             BeautyEyeLNFHelper.launchBeautyEyeLNF();
             UIManager.put("RootPane.setupButtonVisible", false);
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             //TODO exception
         }
 
         SwingUtilities.invokeLater(() -> {
-            MainFrame mainFrame= new MainFrame(); });
+            MainFrame mainFrame = new MainFrame();
+        });
     }
 }
 

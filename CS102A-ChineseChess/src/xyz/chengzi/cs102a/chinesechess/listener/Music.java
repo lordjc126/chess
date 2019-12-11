@@ -34,11 +34,6 @@ public class Music implements Runnable {
         AudioPlayer.player.start(as);
     }
 
-
-
-
-
-
 }
 
 

@@ -17,8 +17,8 @@ import java.util.ArrayList;
 
 public class ChessGameFrame extends JFrame {
     private JLabel statusLabel;
-    private int x = 450;
-    private int y = 550;
+    private int x = 500;
+    private int y = 600;
 
     @Override
     public int getX() {
@@ -55,14 +55,14 @@ public class ChessGameFrame extends JFrame {
         Font f = new Font("华文行楷", Font.BOLD, 20);//设置字体大小
         statusLabel.setFont(f);
         statusLabel.setForeground(Color.RED);
-        statusLabel.setLocation(0, 400);
         statusLabel.setSize(200, 30);
 
-        ChessboardComponent chessboard = new ChessboardComponent(400, 400, statusLabel);
+        ChessboardComponent chessboard = new ChessboardComponent(400, 500, statusLabel);
         addComponentListener(new ComponentAdapter(){
             public void componentResized(ComponentEvent e) {
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
+                statusLabel.setLocation(0, windowHeight-150);
                 chessboard.setChessboardSize(windowWidth-50,windowHeight-100);
                 if(chessboard.getStringList().size() != 0) {
                     chessboard.loadGame(chessboard.getStringList().get(chessboard.getMove()-1));
@@ -70,7 +70,6 @@ public class ChessGameFrame extends JFrame {
                     chessboard.loadGame(chessboard.initial());
                 }
                 chessboard.repaint();
-                System.out.println("shit");
             }
         });
 
@@ -82,6 +81,7 @@ public class ChessGameFrame extends JFrame {
         button.setLocation(170, 400);
         button.setSize(200, 20);
         add(button);
+        button.setVisible(false);
 
         JMenuBar bar = new JMenuBar();
         JMenuItem item = new JMenuItem("Undo");

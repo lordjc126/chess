@@ -97,7 +97,8 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-
+Music BGM = new Music();
+BGM.start();
         try
         {
             BeautyEyeLNFHelper.frameBorderStyle = BeautyEyeLNFHelper.FrameBorderStyle.translucencyAppleLike;

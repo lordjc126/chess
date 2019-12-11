@@ -84,14 +84,16 @@ public class ChessGameFrame extends JFrame {
         button.setVisible(false);
 
         JMenuBar bar = new JMenuBar();
+        JMenu Edit = new JMenu("Edit");
         JMenuItem item = new JMenuItem("Undo");
         JMenuItem item2 = new JMenuItem("UndoUndo");
         JMenu file = new JMenu("file");
         JMenuItem initialGame = new JMenuItem("initialize");
         JMenuItem loadGame = new JMenuItem("load");
-        bar.add(item);
-        bar.add(item2);
+        bar.add(Edit);
         bar.add(file);
+        Edit.add(item);
+        Edit.add(item2);
         file.add(initialGame);
         file.add(loadGame);
         setJMenuBar(bar);

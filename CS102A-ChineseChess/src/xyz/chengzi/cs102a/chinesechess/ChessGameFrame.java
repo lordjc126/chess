@@ -2,7 +2,6 @@ package xyz.chengzi.cs102a.chinesechess;
 
 import xyz.chengzi.cs102a.chinesechess.chess.ChessColor;
 import xyz.chengzi.cs102a.chinesechess.chessboard.ChessboardComponent;
-import xyz.chengzi.cs102a.chinesechess.listener.Timekeeper;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 
 public class ChessGameFrame extends JFrame {
     private JLabel statusLabel;
-    private int x = 500;
+    private int x = 540;
     private int y = 600;
 
     @Override
@@ -57,16 +56,19 @@ public class ChessGameFrame extends JFrame {
         statusLabel.setForeground(Color.RED);
         statusLabel.setSize(200, 30);
 
-        ChessboardComponent chessboard = new ChessboardComponent(400, 500, statusLabel);
-        addComponentListener(new ComponentAdapter(){
+        ChessboardComponent chessboard = new ChessboardComponent(300,300 ,statusLabel);
+
+
+        addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
                 statusLabel.setLocation(0, windowHeight-150);
-                chessboard.setChessboardSize(windowWidth-50,windowHeight-100);
-                if(chessboard.getStringList().size() != 0) {
-                    chessboard.loadGame(chessboard.getStringList().get(chessboard.getMove()-1));
-                }else{
+                chessboard.setChessboardSize(windowWidth -50 , windowHeight  - 150);
+                //chessboard.setLocation(windowWidth / 2 - (chessboard.getWidth() / 2), 0);
+                if (chessboard.getStringList().size() != 0) {
+                    chessboard.loadGame(chessboard.getStringList().get(chessboard.getMove() - 1));
+                } else {
                     chessboard.loadGame(chessboard.initial());
                 }
                 chessboard.repaint();
@@ -234,52 +236,52 @@ public class ChessGameFrame extends JFrame {
                                 chessboard.getWhoTurn().setForeground(Color.BLACK);
                             }
 
-                        }else if(input.get(0).startsWith("@TOTAL_STEP=")){
+                        } else if (input.get(0).startsWith("@TOTAL_STEP=")) {
                             char[] array = input.get(0).toCharArray();
-                            int n = Integer.parseInt(String.valueOf(array[array.length-1]));
+                            int n = Integer.parseInt(String.valueOf(array[array.length - 1]));
                             char[] line;
 
                             for (int j = 0; j < n; j++) {
-                                line = input.get(3+j).toCharArray();
+                                line = input.get(3 + j).toCharArray();
 
-                                if(chessboard.getCurrentColor() == ChessColor.RED){
-                                    if(chessboard.judgeCase2(line) == 0){
+                                if (chessboard.getCurrentColor() == ChessColor.RED) {
+                                    if (chessboard.judgeCase2(line) == 0) {
                                         chessboard.swapChessComponents(chessboard.getChessboard()
-                                                        [10 - Integer.parseInt(String.valueOf(line[2]))] [9 - Integer.parseInt(String.valueOf(line[0]))],
+                                                        [10 - Integer.parseInt(String.valueOf(line[2]))][9 - Integer.parseInt(String.valueOf(line[0]))],
                                                 chessboard.getChessboard()
-                                                        [10 - Integer.parseInt(String.valueOf(line[6]))] [9 - Integer.parseInt(String.valueOf(line[4]))]);
+                                                        [10 - Integer.parseInt(String.valueOf(line[6]))][9 - Integer.parseInt(String.valueOf(line[4]))]);
                                         chessboard.swapColor();
-                                    }else if(chessboard.judgeCase2(line) == 1){
+                                    } else if (chessboard.judgeCase2(line) == 1) {
                                         JOptionPane.showMessageDialog(chessboard, "Position Out Of Range", "error",
                                                 JOptionPane.PLAIN_MESSAGE);
-                                    }else if(chessboard.judgeCase2(line) == 2){
+                                    } else if (chessboard.judgeCase2(line) == 2) {
                                         JOptionPane.showMessageDialog(chessboard, "Invalid From Position", "error",
                                                 JOptionPane.PLAIN_MESSAGE);
-                                    }else if(chessboard.judgeCase2(line) == 3){
+                                    } else if (chessboard.judgeCase2(line) == 3) {
                                         JOptionPane.showMessageDialog(chessboard, "Invalid To Position", "error",
                                                 JOptionPane.PLAIN_MESSAGE);
-                                    }else if(chessboard.judgeCase2(line) == 4){
+                                    } else if (chessboard.judgeCase2(line) == 4) {
                                         JOptionPane.showMessageDialog(chessboard, "Invalid Move Pattern", "error",
                                                 JOptionPane.PLAIN_MESSAGE);
                                     }
 
-                                }else if(chessboard.getCurrentColor() == ChessColor.BLACK){
-                                    if(chessboard.judgeCase2(line) == 0) {
+                                } else if (chessboard.getCurrentColor() == ChessColor.BLACK) {
+                                    if (chessboard.judgeCase2(line) == 0) {
                                         chessboard.swapChessComponents(chessboard.getChessboard()
                                                         [Integer.parseInt(String.valueOf(line[2])) - 1][Integer.parseInt(String.valueOf(line[0])) - 1],
                                                 chessboard.getChessboard()
                                                         [Integer.parseInt(String.valueOf(line[6])) - 1][Integer.parseInt(String.valueOf(line[4])) - 1]);
                                         chessboard.swapColor();
-                                    }else if(chessboard.judgeCase2(line) == 1){
+                                    } else if (chessboard.judgeCase2(line) == 1) {
                                         JOptionPane.showMessageDialog(chessboard, "Position Out Of Range", "error",
                                                 JOptionPane.PLAIN_MESSAGE);
-                                    }else if(chessboard.judgeCase2(line) == 2){
+                                    } else if (chessboard.judgeCase2(line) == 2) {
                                         JOptionPane.showMessageDialog(chessboard, "Invalid From Position", "error",
                                                 JOptionPane.PLAIN_MESSAGE);
-                                    }else if(chessboard.judgeCase2(line) == 3){
+                                    } else if (chessboard.judgeCase2(line) == 3) {
                                         JOptionPane.showMessageDialog(chessboard, "Invalid To Position", "error",
                                                 JOptionPane.PLAIN_MESSAGE);
-                                    }else if(chessboard.judgeCase2(line) == 4){
+                                    } else if (chessboard.judgeCase2(line) == 4) {
                                         JOptionPane.showMessageDialog(chessboard, "Invalid Move Pattern", "error",
                                                 JOptionPane.PLAIN_MESSAGE);
                                     }

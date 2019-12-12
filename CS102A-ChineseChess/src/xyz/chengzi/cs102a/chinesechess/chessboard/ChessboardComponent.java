@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ChessboardComponent extends JComponent {
     private ChessListener chessListener = new ChessboardChessListener(this);
@@ -19,6 +21,7 @@ public class ChessboardComponent extends JComponent {
     private int move = 0;//动了多少步
     private int n;
     private boolean stopUndoing = false;
+    private Point realPoint;
 
 
 
@@ -140,6 +143,47 @@ public class ChessboardComponent extends JComponent {
 
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
         // Note that chess1 has higher priority, 'destroys' chess2 if exists.
+        Point pointI = calculatePoint(chess1.getChessboardPoint().getX(), chess1.getChessboardPoint().getY());
+        Point pointF = calculatePoint(chess2.getChessboardPoint().getX(), chess2.getChessboardPoint().getY());
+        java.util.Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            int xF = (int) pointF.getX();
+            int yF = (int) pointF.getY();
+            int xI = (int) pointI.getX();
+            int yI = (int) pointI.getY();
+            public void run() {
+                if (xF > xI) {
+                    xI++;
+                    chess1.setLocation(xI,yI);
+                    repaint();
+                    System.out.println(xI+ " " + yI);
+                } else if (xF < xI) {
+                    xI--;
+                    chess1.setLocation(xI,yI);
+                    repaint();
+                    System.out.println(xI+ " " + yI);
+                }
+                else if (yF > yI) {
+                    yI++;
+                    chess1.setLocation(xI,yI);
+                    repaint();
+                    System.out.println(xI+ " " + yI);
+                } else if (yF < yI) {
+                    yI--;
+                    chess1.setLocation(xI,yI);
+                    repaint();
+                    System.out.println(xI+ " " + yI);
+                }
+                else if(xI == xF && yI == yF){
+                    repaint();
+                    cancel();
+                }
+            }
+        };
+        timer.scheduleAtFixedRate (timerTask, 0, 5);
+
+        //-----------------------------------------------------------------------------------------------------------------------------------Action
+
         ChessComponent chess3 = chess2;
         if (!(chess2 instanceof EmptySlotComponent)) {
             remove(chess2);
@@ -339,11 +383,13 @@ public class ChessboardComponent extends JComponent {
         g.drawLine(p1.x + offsetX, p1.y + offsetY, p2.x + offsetX, p2.y + offsetY);
     }
 
-    private Point calculatePoint(int row, int col) {
-        return new Point(col * getWidth() / 9, row * getHeight() / 10);
+    //--------------------------------------------------------------------------------------------------changePoint
+
+    public Point calculatePoint(int row, int col) {
+        return new Point(col * ((getWidth()-(ChessComponent.CHESS_SIZE.width)) / 8) , row * ((getHeight() - (ChessComponent.CHESS_SIZE.width)) / 9));
     }
 
-    //--------------------------------------------------------------------------------------------------loadgame
+    //--------------------------------------------------------------------------------------------------loadGame
 
     public void loadGame(String s) {
         char[][] arr1 = toCharArray(s);
@@ -589,7 +635,7 @@ public class ChessboardComponent extends JComponent {
             for (int j = 0; j < chessboard[0].length; j++) {
                         if(chessboard[i][j].canMoveTo(chessboard,redg.getChessboardPoint()) && chessboard[i][j].getChessColor() == ChessColor.BLACK
                            || chessboard[i][j].canMoveTo(chessboard,blackg.getChessboardPoint()) && chessboard[i][j].getChessColor() == ChessColor.RED){
-                            JOptionPane.showMessageDialog(this, "Chechmate!", "warning",
+                            JOptionPane.showMessageDialog(this, "Checkmate!", "warning",
                                     JOptionPane.PLAIN_MESSAGE);
                             break;
                 }

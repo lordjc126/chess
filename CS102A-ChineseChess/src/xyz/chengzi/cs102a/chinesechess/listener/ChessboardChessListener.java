@@ -29,17 +29,16 @@ public class ChessboardChessListener extends ChessListener {
                 chessboardComponent.swapColor();
                 first.setSelected(false);
                 first = null;
-                chessboardComponent.repaint();
             }
         }
     }
 
-    private boolean handleFirst(ChessComponent chessComponent) {
-        return chessComponent.getChessColor() == chessboardComponent.getCurrentColor();
-    }
+        private boolean handleFirst (ChessComponent chessComponent){
+            return chessComponent.getChessColor() == chessboardComponent.getCurrentColor();
+        }
 
-    private boolean handleSecond(ChessComponent chessComponent) {
-        return chessComponent.getChessColor() != chessboardComponent.getCurrentColor() &&
-                first.canMoveTo(chessboardComponent.getChessboard(), chessComponent.getChessboardPoint());
+        private boolean handleSecond (ChessComponent chessComponent){
+            return chessComponent.getChessColor() != chessboardComponent.getCurrentColor() &&
+                    first.canMoveTo(chessboardComponent.getChessboard(), chessComponent.getChessboardPoint());
+        }
     }
-}

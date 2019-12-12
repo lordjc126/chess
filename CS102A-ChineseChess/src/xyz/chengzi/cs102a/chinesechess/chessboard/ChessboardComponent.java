@@ -528,4 +528,42 @@ public class ChessboardComponent extends JComponent {
         return 0;
     }
 
+    public int judgeCase2(char[] c){
+        int[] n = new int[c.length];
+        for (int i = 0; i < c.length; i++) {
+            if(Character.isDigit(c[i])) {
+                n[i] = Integer.parseInt(String.valueOf(c[i]));
+            }else{
+                n[i] = 0;
+            }
+        }
+
+        if(!(n[2]>0 && n[2]<11 && n[0]>0 && n[0]<10 &&
+        n[4]>0 && n[4]<10 && n[6]>0 && n[6]<11)){
+            return 1;
+        }
+
+        if(currentColor == ChessColor.RED){
+            if(chessboard[10-n[2]][9-n[0]] instanceof EmptySlotComponent){
+                return 2;
+            }else if(chessboard[10-n[6]][9-n[4]].getChessColor() == ChessColor.RED){
+                return 3;
+            }else if(!(chessboard[10-n[2]][9-n[0]].canMoveTo(chessboard,new ChessboardPoint(10-n[6],9-n[4])))){
+                return 4;
+            }
+        }else if(currentColor == ChessColor.BLACK){
+            if(chessboard[n[2]-1][n[0]-1] instanceof EmptySlotComponent){
+                return 2;
+            }else if(chessboard[n[6]-1][n[4]-1].getChessColor() == ChessColor.BLACK){
+                return 3;
+            }else if(!(chessboard[n[2]-1][n[0]-1].canMoveTo(chessboard,new ChessboardPoint(n[6]-1,n[4]-1)))){
+                return 4;
+            }
+        }
+
+
+        return 0;
+
+    }
+
 }

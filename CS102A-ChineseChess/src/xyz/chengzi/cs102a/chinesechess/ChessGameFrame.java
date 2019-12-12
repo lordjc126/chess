@@ -232,6 +232,60 @@ public class ChessGameFrame extends JFrame {
                                 chessboard.getWhoTurn().setForeground(Color.BLACK);
                             }
 
+                        }else if(input.get(0).startsWith("@TOTAL_STEP=")){
+                            char[] array = input.get(0).toCharArray();
+                            int n = Integer.parseInt(String.valueOf(array[array.length-1]));
+                            char[] line;
+
+                            for (int j = 0; j < n; j++) {
+                                line = input.get(3+j).toCharArray();
+
+                                if(chessboard.getCurrentColor() == ChessColor.RED){
+                                    if(chessboard.judgeCase2(line) == 0){
+                                        chessboard.swapChessComponents(chessboard.getChessboard()
+                                                        [10 - Integer.parseInt(String.valueOf(line[2]))] [9 - Integer.parseInt(String.valueOf(line[0]))],
+                                                chessboard.getChessboard()
+                                                        [10 - Integer.parseInt(String.valueOf(line[6]))] [9 - Integer.parseInt(String.valueOf(line[4]))]);
+                                        chessboard.swapColor();
+                                    }else if(chessboard.judgeCase2(line) == 1){
+                                        JOptionPane.showMessageDialog(chessboard, "Position Out Of Range", "error",
+                                                JOptionPane.PLAIN_MESSAGE);
+                                    }else if(chessboard.judgeCase2(line) == 2){
+                                        JOptionPane.showMessageDialog(chessboard, "Invalid From Position", "error",
+                                                JOptionPane.PLAIN_MESSAGE);
+                                    }else if(chessboard.judgeCase2(line) == 3){
+                                        JOptionPane.showMessageDialog(chessboard, "Invalid To Position", "error",
+                                                JOptionPane.PLAIN_MESSAGE);
+                                    }else if(chessboard.judgeCase2(line) == 4){
+                                        JOptionPane.showMessageDialog(chessboard, "Invalid Move Pattern", "error",
+                                                JOptionPane.PLAIN_MESSAGE);
+                                    }
+
+                                }else if(chessboard.getCurrentColor() == ChessColor.BLACK){
+                                    if(chessboard.judgeCase2(line) == 0) {
+                                        chessboard.swapChessComponents(chessboard.getChessboard()
+                                                        [Integer.parseInt(String.valueOf(line[2])) - 1][Integer.parseInt(String.valueOf(line[0])) - 1],
+                                                chessboard.getChessboard()
+                                                        [Integer.parseInt(String.valueOf(line[6])) - 1][Integer.parseInt(String.valueOf(line[4])) - 1]);
+                                        chessboard.swapColor();
+                                    }else if(chessboard.judgeCase2(line) == 1){
+                                        JOptionPane.showMessageDialog(chessboard, "Position Out Of Range", "error",
+                                                JOptionPane.PLAIN_MESSAGE);
+                                    }else if(chessboard.judgeCase2(line) == 2){
+                                        JOptionPane.showMessageDialog(chessboard, "Invalid From Position", "error",
+                                                JOptionPane.PLAIN_MESSAGE);
+                                    }else if(chessboard.judgeCase2(line) == 3){
+                                        JOptionPane.showMessageDialog(chessboard, "Invalid To Position", "error",
+                                                JOptionPane.PLAIN_MESSAGE);
+                                    }else if(chessboard.judgeCase2(line) == 4){
+                                        JOptionPane.showMessageDialog(chessboard, "Invalid Move Pattern", "error",
+                                                JOptionPane.PLAIN_MESSAGE);
+                                    }
+                                }
+
+                            }
+
+
                         }
 
                         BufferedReader.close();

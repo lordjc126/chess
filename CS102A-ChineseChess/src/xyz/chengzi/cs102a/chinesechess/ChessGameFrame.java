@@ -90,12 +90,14 @@ public class ChessGameFrame extends JFrame {
         JMenu file = new JMenu("file");
         JMenuItem initialGame = new JMenuItem("initialize");
         JMenuItem loadGame = new JMenuItem("load");
+        JMenuItem save = new JMenuItem("save");
         bar.add(Edit);
         bar.add(file);
         Edit.add(item);
         Edit.add(item2);
         file.add(initialGame);
         file.add(loadGame);
+        file.add(save);
         setJMenuBar(bar);
 
 
@@ -311,6 +313,41 @@ public class ChessGameFrame extends JFrame {
                 chessboard.clearStringList();
                 chessboard.getWhoTurn().setText("RED TURN");
                 chessboard.getWhoTurn().setForeground(Color.RED);
+            }
+        });
+
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    FileWriter fileWriter = new FileWriter("E:\\南方科技大学\\saveChineseChess.txt");
+                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                    char[][] saveArray = chessboard.toCharArray(chessboard.getStringList().get(chessboard.getMove()-1));
+
+                    if(chessboard.getCurrentColor() == ChessColor.RED) {
+                        bufferedWriter.write("@LAST_MOVER=BLACK");
+                    }else if(chessboard.getCurrentColor() == ChessColor.BLACK){
+                        bufferedWriter.write("@LAST_MOVER=RED");
+                    }
+                    bufferedWriter.write("\n");
+                    bufferedWriter.write("@@");
+                    bufferedWriter.write("\n");
+                    bufferedWriter.write("\n");
+
+                    for (int i = 0; i < saveArray.length; i++) {
+                        for (int j = 0; j < saveArray[0].length; j++) {
+                            bufferedWriter.write(saveArray[i][j]);
+                        }
+                        bufferedWriter.write("\n");
+                    }
+                    bufferedWriter.close();
+                    fileWriter.close();
+
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
             }
         });
 

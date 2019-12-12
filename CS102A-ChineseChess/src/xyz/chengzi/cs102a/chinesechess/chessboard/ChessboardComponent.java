@@ -193,6 +193,7 @@ public class ChessboardComponent extends JComponent {
             n = 0;
             stopUndoing = false;
         }
+        judgeCheckmate();
         System.out.println(toString());
         System.out.println(move);
         System.out.println(n);
@@ -460,6 +461,9 @@ public class ChessboardComponent extends JComponent {
         return result;
     }
 
+
+    //-----------------------------------------------------------------------------------------------------judgeCases
+
     public int judgeCase1(String s) {
         char[] c = s.toCharArray();
         boolean ifSpaceMissing = true;
@@ -563,6 +567,34 @@ public class ChessboardComponent extends JComponent {
 
 
         return 0;
+
+    }
+
+    public void judgeCheckmate(){
+
+        ChessComponent redg = null;
+        ChessComponent blackg = null;
+
+        for (int i = 0; i < chessboard.length; i++) {
+            for (int j = 0; j < chessboard[0].length; j++) {
+                if(chessboard[i][j].getChessName().equals("g")){
+                    redg = chessboard[i][j];
+                }else if(chessboard[i][j].getChessName().equals("G")){
+                    blackg = chessboard[i][j];
+                }
+            }
+        }
+
+        for (int i = 0; i < chessboard.length; i++) {
+            for (int j = 0; j < chessboard[0].length; j++) {
+                        if(chessboard[i][j].canMoveTo(chessboard,redg.getChessboardPoint()) && chessboard[i][j].getChessColor() == ChessColor.BLACK
+                           || chessboard[i][j].canMoveTo(chessboard,blackg.getChessboardPoint()) && chessboard[i][j].getChessColor() == ChessColor.RED){
+                            JOptionPane.showMessageDialog(this, "Chechmate!", "warning",
+                                    JOptionPane.PLAIN_MESSAGE);
+                            break;
+                }
+            }
+        }
 
     }
 

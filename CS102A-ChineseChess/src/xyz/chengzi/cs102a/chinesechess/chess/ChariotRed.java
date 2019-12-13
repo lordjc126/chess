@@ -39,7 +39,6 @@ public class ChariotRed extends ChessComponent{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         g.setColor(CHESS_COLOR);
         g.fillOval(0, 0, getWidth() - 1, getHeight() - 1);
         g.setColor(getChessColor().getColor());

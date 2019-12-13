@@ -2,6 +2,10 @@ package xyz.chengzi.cs102a.chinesechess;
 
 import xyz.chengzi.cs102a.chinesechess.chess.ChessColor;
 import xyz.chengzi.cs102a.chinesechess.chessboard.ChessboardComponent;
+import xyz.chengzi.cs102a.chinesechess.listener.GameMusic1;
+import xyz.chengzi.cs102a.chinesechess.listener.GameMusic2;
+import xyz.chengzi.cs102a.chinesechess.listener.GameMusic3;
+import xyz.chengzi.cs102a.chinesechess.listener.MainFrame;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -18,6 +22,9 @@ public class ChessGameFrame extends JFrame {
     private JLabel statusLabel;
     private int x = 540;
     private int y = 600;
+    private GameMusic1 bgm1 = new GameMusic1();
+    private GameMusic2 bgm2 = new GameMusic2();
+    private GameMusic3 bgm3 = new GameMusic3();
 
     @Override
     public int getX() {
@@ -41,7 +48,7 @@ public class ChessGameFrame extends JFrame {
         return statusLabel;
     }
 
-    public ChessGameFrame() {
+    public ChessGameFrame() throws IOException {
         setTitle("Chinese Chess");
         setSize(x, y);
         setLocationRelativeTo(null); // Center the window.
@@ -56,15 +63,15 @@ public class ChessGameFrame extends JFrame {
         statusLabel.setForeground(Color.RED);
         statusLabel.setSize(200, 30);
 
-        ChessboardComponent chessboard = new ChessboardComponent(500,560 ,statusLabel);
+        ChessboardComponent chessboard = new ChessboardComponent(500, 560, statusLabel);
 
 
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
-                statusLabel.setLocation(0, windowHeight-150);
-                chessboard.setChessboardSize(windowWidth -50 , windowHeight  - 150);
+                statusLabel.setLocation(0, windowHeight - 150);
+                chessboard.setChessboardSize(windowWidth - 50, windowHeight - 150);
                 //chessboard.setLocation(windowWidth / 2 - (chessboard.getWidth() / 2), 0);
                 if (chessboard.getStringList().size() != 0) {
                     chessboard.loadGame(chessboard.getStringList().get(chessboard.getMove() - 1));
@@ -93,6 +100,11 @@ public class ChessGameFrame extends JFrame {
         JMenuItem initialGame = new JMenuItem("initialize");
         JMenuItem loadGame = new JMenuItem("load");
         JMenuItem save = new JMenuItem("save");
+        JMenu Music = new JMenu("Music");
+        JMenuItem BGM1 = new JMenuItem("BGM1");
+        JMenuItem BGM2 = new JMenuItem("BGM2");
+        JMenuItem BGM3 = new JMenuItem("BGM3");
+        JMenuItem NoMusic = new JMenuItem("NoMusic");
         bar.add(Edit);
         bar.add(file);
         Edit.add(item);
@@ -101,6 +113,11 @@ public class ChessGameFrame extends JFrame {
         file.add(loadGame);
         file.add(save);
         setJMenuBar(bar);
+        Music.add(BGM1);
+        Music.add(BGM2);
+        Music.add(BGM3);
+        Music.add(NoMusic);
+        bar.add(Music);
 
 
         item.addActionListener(new ActionListener() {
@@ -305,6 +322,67 @@ public class ChessGameFrame extends JFrame {
         });
 
 
+        BGM1.addActionListener(new ActionListener() {
+                                   @Override
+                                   public void actionPerformed(ActionEvent e) {
+                                       if (e.getSource().equals(BGM1)) {
+                                           try {
+                                               bgm1.playBgm1();
+                                               bgm2.stop();
+                                               bgm3.stop();
+                                           } catch (IOException ex) {
+                                               ex.printStackTrace();
+                                           }
+                                       }
+                                   }
+                               }
+        );
+
+
+        BGM2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource().equals(BGM2)) {
+                    try {
+                        bgm2.playBgm2();
+                        bgm1.stop();
+                        bgm3.stop();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        BGM3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource().equals(BGM3)) {
+                    try {
+                        bgm3.playBgm3();
+                        bgm1.stop();
+                        bgm2.stop();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+        NoMusic.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource().equals(NoMusic)) {
+                    bgm1.stop();
+                    bgm2.stop();
+                    bgm3.stop();
+                }
+            }
+        });
+
+
+
+
+
         initialGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -324,11 +402,11 @@ public class ChessGameFrame extends JFrame {
                 try {
                     FileWriter fileWriter = new FileWriter("E:\\南方科技大学\\saveChineseChess.txt");
                     BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                    char[][] saveArray = chessboard.toCharArray(chessboard.getStringList().get(chessboard.getMove()-1));
+                    char[][] saveArray = chessboard.toCharArray(chessboard.getStringList().get(chessboard.getMove() - 1));
 
-                    if(chessboard.getCurrentColor() == ChessColor.RED) {
+                    if (chessboard.getCurrentColor() == ChessColor.RED) {
                         bufferedWriter.write("@LAST_MOVER=BLACK");
-                    }else if(chessboard.getCurrentColor() == ChessColor.BLACK){
+                    } else if (chessboard.getCurrentColor() == ChessColor.BLACK) {
                         bufferedWriter.write("@LAST_MOVER=RED");
                     }
                     bufferedWriter.write("\n");

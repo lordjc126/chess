@@ -1,9 +1,9 @@
 package xyz.chengzi.cs102a.chinesechess.chessboard;
 
-import xyz.chengzi.cs102a.chinesechess.ChessGameFrame;
 import xyz.chengzi.cs102a.chinesechess.chess.*;
 import xyz.chengzi.cs102a.chinesechess.listener.ChessListener;
 import xyz.chengzi.cs102a.chinesechess.listener.ChessboardChessListener;
+import xyz.chengzi.cs102a.chinesechess.listener.GameSound;
 
 import javax.swing.*;
 import java.awt.*;
@@ -141,6 +141,7 @@ public class ChessboardComponent extends JComponent {
     //----------------------------------------------------------------------------------------------------------swap
 
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
+        GameSound Sound = new GameSound();
         // Note that chess1 has higher priority, 'destroys' chess2 if exists.
         Point pointI = calculatePoint(chess1.getChessboardPoint().getX(), chess1.getChessboardPoint().getY());
         Point pointF = calculatePoint(chess2.getChessboardPoint().getX(), chess2.getChessboardPoint().getY());
@@ -152,6 +153,7 @@ public class ChessboardComponent extends JComponent {
             int yI = (int) pointI.getY();
 
             public void run() {
+                Sound.start();
                     if (xF > xI) {
                         xI++;
                         chess1.setLocation(xI, yI);

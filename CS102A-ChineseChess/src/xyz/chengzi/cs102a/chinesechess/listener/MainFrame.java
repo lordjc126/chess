@@ -3,7 +3,6 @@ package xyz.chengzi.cs102a.chinesechess.listener;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
 import xyz.chengzi.cs102a.chinesechess.ChessGameFrame;
-import xyz.chengzi.cs102a.chinesechess.chessboard.ChessboardComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.IOException;
 
 public class MainFrame extends JFrame implements ActionListener {
 
@@ -18,9 +18,9 @@ public class MainFrame extends JFrame implements ActionListener {
     private JButton button1;
     private JButton button2;
     private JButton button3;
-    Music BGM = new Music();
+    private MainframeMusic mainframeMusic = new MainframeMusic();
 
-    public MainFrame() {
+    public MainFrame() throws IOException {
 
         setTitle("Java Project: Chinese Chess");
         setSize(430, 1000);
@@ -32,7 +32,7 @@ public class MainFrame extends JFrame implements ActionListener {
         //------------------------------------------------------------------------------
 
         button1 = new JButton("开始游戏");
-        button2 = new JButton("游戏设置");
+        button2 = new JButton("联机对战");
         button3 = new JButton("退出游戏");
         Dimension preferredSize = new Dimension(300, 80);
         button1.setPreferredSize(preferredSize);
@@ -64,24 +64,48 @@ public class MainFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Music2 BGM2 = new Music2();
+
         if (e.getSource() == button1) {
-            BGM.stop();
-            this.dispose();//点击按钮时frame1销毁,new一个frame2
-            ChessGameFrame chessFrame = new ChessGameFrame();
-            BGM2.start();
+            this.dispose();//点击按钮时frame1销毁,new一个frame
+
+            try {
+                mainframeMusic.playSound();
+                mainframeMusic.stop();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            ChessGameFrame chessFrame = null;
+            try {
+                chessFrame = new ChessGameFrame();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
             chessFrame.setVisible(true);
-            chessFrame.addComponentListener(new ComponentAdapter() {
+            /*chessFrame.addComponentListener(new ComponentAdapter() {
                 public void componentResized(ComponentEvent e) {
                     int windowWidth = chessFrame.getWidth();
                     int windowHeight = chessFrame.getHeight();
                     chessFrame.setX(windowWidth);
                     chessFrame.setY(windowHeight);
                 }
-            });
+            });*/
 
         } else if (e.getSource() == button3) {
+            try {
+                mainframeMusic.playSound();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             this.dispose();
+        }
+        else if(e.getSource() == button2){
+            try {
+                mainframeMusic.playSound();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -107,8 +131,13 @@ public class MainFrame extends JFrame implements ActionListener {
         }
 
         SwingUtilities.invokeLater(() -> {
-            MainFrame mainFrame = new MainFrame();
-            //mainFrame.BGM.start();
+
+            try {
+                MainFrame mainFrame = new MainFrame();
+                mainFrame.mainframeMusic.run();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 }

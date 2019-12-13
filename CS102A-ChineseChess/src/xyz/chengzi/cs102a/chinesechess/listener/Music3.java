@@ -27,7 +27,7 @@ public class Music3 implements Runnable{
 
 
     public void playBgm3() throws IOException {
-        FileInputStream bgm3 = new FileInputStream(System.getProperty("user.dir") + "\\Bad Apple.wav");
+        FileInputStream bgm3 = new FileInputStream(System.getProperty("user.dir") + "\\Mice-on-Venus.wav");
         AudioStream as = new AudioStream(bgm3);
         AudioPlayer.player.start(as);
     }

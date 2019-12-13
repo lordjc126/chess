@@ -28,8 +28,10 @@ public class Music2 implements Runnable{
     }
 
     public void playBgm2() throws IOException {
-        FileInputStream bgm2 = new FileInputStream(System.getProperty("user.dir") + "\\Bad Apple.wav");
+        FileInputStream bgm2 = new FileInputStream(System.getProperty("user.dir") + "\\Haggstrom.wav");
         AudioStream as = new AudioStream(bgm2);
         AudioPlayer.player.start(as);
     }
+
+
 }

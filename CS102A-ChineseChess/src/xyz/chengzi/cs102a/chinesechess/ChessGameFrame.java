@@ -56,7 +56,7 @@ public class ChessGameFrame extends JFrame {
         statusLabel.setForeground(Color.RED);
         statusLabel.setSize(200, 30);
 
-        ChessboardComponent chessboard = new ChessboardComponent(300,300 ,statusLabel);
+        ChessboardComponent chessboard = new ChessboardComponent(500,560 ,statusLabel);
 
 
         addComponentListener(new ComponentAdapter() {

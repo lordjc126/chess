@@ -18,6 +18,7 @@ public class MainFrame extends JFrame implements ActionListener {
     private JButton button1;
     private JButton button2;
     private JButton button3;
+    Music BGM = new Music();
 
     public MainFrame() {
 
@@ -63,9 +64,12 @@ public class MainFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        Music2 BGM2 = new Music2();
         if (e.getSource() == button1) {
+            BGM.stop();
             this.dispose();//点击按钮时frame1销毁,new一个frame2
             ChessGameFrame chessFrame = new ChessGameFrame();
+            BGM2.start();
             chessFrame.setVisible(true);
             chessFrame.addComponentListener(new ComponentAdapter() {
                 public void componentResized(ComponentEvent e) {
@@ -75,7 +79,6 @@ public class MainFrame extends JFrame implements ActionListener {
                     chessFrame.setY(windowHeight);
                 }
             });
-
 
         } else if (e.getSource() == button3) {
             this.dispose();
@@ -94,8 +97,7 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        Music2 BGM = new Music2();
-        BGM.start();
+
         try {
             BeautyEyeLNFHelper.frameBorderStyle = BeautyEyeLNFHelper.FrameBorderStyle.translucencyAppleLike;
             BeautyEyeLNFHelper.launchBeautyEyeLNF();
@@ -106,6 +108,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
         SwingUtilities.invokeLater(() -> {
             MainFrame mainFrame = new MainFrame();
+            //mainFrame.BGM.start();
         });
     }
 }

@@ -24,7 +24,6 @@ public class ChessboardComponent extends JComponent {
     private Point realPoint;
 
 
-
 //-------------------------------------------------------------------------------------------------getter and setter
 
     public void setCurrentColor(ChessColor currentColor) {
@@ -126,7 +125,7 @@ public class ChessboardComponent extends JComponent {
 
     public void setChessboardSize(int x, int y) {
         this.setSize(x, y);
-        System.out.println(getWidth() +" "+ getHeight());
+        System.out.println(getWidth() + " " + getHeight());
     }
 
     //----------------------------------------------------------------------------------------------------------initialize
@@ -151,36 +150,35 @@ public class ChessboardComponent extends JComponent {
             int yF = (int) pointF.getY();
             int xI = (int) pointI.getX();
             int yI = (int) pointI.getY();
+
             public void run() {
-                if (xF > xI) {
-                    xI++;
-                    chess1.setLocation(xI,yI);
-                    repaint();
-                    System.out.println(xI+ " " + yI);
-                } else if (xF < xI) {
-                    xI--;
-                    chess1.setLocation(xI,yI);
-                    repaint();
-                    System.out.println(xI+ " " + yI);
+                    if (xF > xI) {
+                        xI++;
+                        chess1.setLocation(xI, yI);
+                        repaint();
+                        System.out.println(xI + " " + yI);
+                    } else if (xF < xI) {
+                        xI--;
+                        chess1.setLocation(xI, yI);
+                        repaint();
+                        System.out.println(xI + " " + yI);
+                    } else if (yF > yI) {
+                        yI++;
+                        chess1.setLocation(xI, yI);
+                        repaint();
+                        System.out.println(xI + " " + yI);
+                    } else if (yF < yI) {
+                        yI--;
+                        chess1.setLocation(xI, yI);
+                        repaint();
+                        System.out.println(xI + " " + yI);
+                    } else if (xI == xF && yI == yF) {
+                        repaint();
+                        cancel();
+                    }
                 }
-                else if (yF > yI) {
-                    yI++;
-                    chess1.setLocation(xI,yI);
-                    repaint();
-                    System.out.println(xI+ " " + yI);
-                } else if (yF < yI) {
-                    yI--;
-                    chess1.setLocation(xI,yI);
-                    repaint();
-                    System.out.println(xI+ " " + yI);
-                }
-                else if(xI == xF && yI == yF){
-                    repaint();
-                    cancel();
-                }
-            }
         };
-        timer.scheduleAtFixedRate (timerTask, 0, 5);
+        timer.scheduleAtFixedRate(timerTask, 0, 5);
 
         //-----------------------------------------------------------------------------------------------------------------------------------Action
 
@@ -386,7 +384,7 @@ public class ChessboardComponent extends JComponent {
     //--------------------------------------------------------------------------------------------------changePoint
 
     public Point calculatePoint(int row, int col) {
-        return new Point(col * ((getWidth()-(ChessComponent.CHESS_SIZE.width)) / 8) , row * ((getHeight() - (ChessComponent.CHESS_SIZE.width)) / 9));
+        return new Point(col * ((getWidth() - (ChessComponent.CHESS_SIZE.width)) / 8), row * ((getHeight() - (ChessComponent.CHESS_SIZE.width)) / 9));
     }
 
     //--------------------------------------------------------------------------------------------------loadGame
@@ -578,35 +576,35 @@ public class ChessboardComponent extends JComponent {
         return 0;
     }
 
-    public int judgeCase2(char[] c){
+    public int judgeCase2(char[] c) {
         int[] n = new int[c.length];
         for (int i = 0; i < c.length; i++) {
-            if(Character.isDigit(c[i])) {
+            if (Character.isDigit(c[i])) {
                 n[i] = Integer.parseInt(String.valueOf(c[i]));
-            }else{
+            } else {
                 n[i] = 0;
             }
         }
 
-        if(!(n[2]>0 && n[2]<11 && n[0]>0 && n[0]<10 &&
-        n[4]>0 && n[4]<10 && n[6]>0 && n[6]<11)){
+        if (!(n[2] > 0 && n[2] < 11 && n[0] > 0 && n[0] < 10 &&
+                n[4] > 0 && n[4] < 10 && n[6] > 0 && n[6] < 11)) {
             return 1;
         }
 
-        if(currentColor == ChessColor.RED){
-            if(chessboard[10-n[2]][9-n[0]] instanceof EmptySlotComponent){
+        if (currentColor == ChessColor.RED) {
+            if (chessboard[10 - n[2]][9 - n[0]] instanceof EmptySlotComponent) {
                 return 2;
-            }else if(chessboard[10-n[6]][9-n[4]].getChessColor() == ChessColor.RED){
+            } else if (chessboard[10 - n[6]][9 - n[4]].getChessColor() == ChessColor.RED) {
                 return 3;
-            }else if(!(chessboard[10-n[2]][9-n[0]].canMoveTo(chessboard,new ChessboardPoint(10-n[6],9-n[4])))){
+            } else if (!(chessboard[10 - n[2]][9 - n[0]].canMoveTo(chessboard, new ChessboardPoint(10 - n[6], 9 - n[4])))) {
                 return 4;
             }
-        }else if(currentColor == ChessColor.BLACK){
-            if(chessboard[n[2]-1][n[0]-1] instanceof EmptySlotComponent){
+        } else if (currentColor == ChessColor.BLACK) {
+            if (chessboard[n[2] - 1][n[0] - 1] instanceof EmptySlotComponent) {
                 return 2;
-            }else if(chessboard[n[6]-1][n[4]-1].getChessColor() == ChessColor.BLACK){
+            } else if (chessboard[n[6] - 1][n[4] - 1].getChessColor() == ChessColor.BLACK) {
                 return 3;
-            }else if(!(chessboard[n[2]-1][n[0]-1].canMoveTo(chessboard,new ChessboardPoint(n[6]-1,n[4]-1)))){
+            } else if (!(chessboard[n[2] - 1][n[0] - 1].canMoveTo(chessboard, new ChessboardPoint(n[6] - 1, n[4] - 1)))) {
                 return 4;
             }
         }
@@ -616,16 +614,16 @@ public class ChessboardComponent extends JComponent {
 
     }
 
-    public void judgeCheckmate(){
+    public void judgeCheckmate() {
 
         ChessComponent redg = null;
         ChessComponent blackg = null;
 
         for (int i = 0; i < chessboard.length; i++) {
             for (int j = 0; j < chessboard[0].length; j++) {
-                if(chessboard[i][j].getChessName().equals("g")){
+                if (chessboard[i][j].getChessName().equals("g")) {
                     redg = chessboard[i][j];
-                }else if(chessboard[i][j].getChessName().equals("G")){
+                } else if (chessboard[i][j].getChessName().equals("G")) {
                     blackg = chessboard[i][j];
                 }
             }
@@ -633,11 +631,11 @@ public class ChessboardComponent extends JComponent {
 
         for (int i = 0; i < chessboard.length; i++) {
             for (int j = 0; j < chessboard[0].length; j++) {
-                        if(chessboard[i][j].canMoveTo(chessboard,redg.getChessboardPoint()) && chessboard[i][j].getChessColor() == ChessColor.BLACK
-                           || chessboard[i][j].canMoveTo(chessboard,blackg.getChessboardPoint()) && chessboard[i][j].getChessColor() == ChessColor.RED){
-                            JOptionPane.showMessageDialog(this, "Checkmate!", "warning",
-                                    JOptionPane.PLAIN_MESSAGE);
-                            break;
+                if (chessboard[i][j].canMoveTo(chessboard, redg.getChessboardPoint()) && chessboard[i][j].getChessColor() == ChessColor.BLACK
+                        || chessboard[i][j].canMoveTo(chessboard, blackg.getChessboardPoint()) && chessboard[i][j].getChessColor() == ChessColor.RED) {
+                    JOptionPane.showMessageDialog(this, "Checkmate!", "warning",
+                            JOptionPane.PLAIN_MESSAGE);
+                    break;
                 }
             }
         }

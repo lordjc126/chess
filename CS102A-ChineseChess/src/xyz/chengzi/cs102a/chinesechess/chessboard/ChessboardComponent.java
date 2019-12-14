@@ -147,11 +147,6 @@ public class ChessboardComponent extends JComponent implements Runnable{
 
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
         GameSound Sound = new GameSound();
-        try {
-            send();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         ChessComponent chess3 = chess2;
         // Note that chess1 has higher priority, 'destroys' chess2 if exists.
         Point pointI = calculatePoint(chess1.getChessboardPoint().getX(), chess1.getChessboardPoint().getY());
@@ -305,6 +300,12 @@ public class ChessboardComponent extends JComponent implements Runnable{
         System.out.println(move);
         System.out.println(n);
         System.out.println(stringList.size());
+        try {
+            send();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void swapColor() {
@@ -731,16 +732,13 @@ public class ChessboardComponent extends JComponent implements Runnable{
     private int port = 10086;
 
 
-    InetAddress ia = InetAddress.getByName("127.0.0.1");
+    InetAddress ia = InetAddress.getByName("10.17.117.22");
 
 
 
     public void send() throws IOException {
         sendDs = new DatagramSocket(1000);
-        byte[] data = initial().getBytes();
-        if(move>1) {
-            data = (stringList.get(move - 1)).getBytes();
-        }
+        byte[] data = (stringList.get(move-1)).getBytes();
         sendData=new DatagramPacket(data,data.length,ia,port);
         sendDs.send(sendData);
         sendDs.close();
@@ -757,8 +755,12 @@ public class ChessboardComponent extends JComponent implements Runnable{
             move++;
             if(currentColor == ChessColor.RED){
                 currentColor = ChessColor.BLACK;
+                whoTurn.setText("BLACK TURN");
+                whoTurn.setForeground(Color.BLACK);
             }else{
                 currentColor = ChessColor.RED;
+                whoTurn.setText("RED TURN");
+                whoTurn.setForeground(Color.RED);
             }
             loadGame(stringList.get(move-1));
         }

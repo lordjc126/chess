@@ -23,7 +23,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
     private JLabel whoTurn;
     private ArrayList<String> stringList = new ArrayList<String>();
     private int move = 0;//动了多少步
-    private int n;
+    private int n = 0;
     private boolean stopUndoing = false;
 
 
@@ -728,7 +728,6 @@ public class ChessboardComponent extends JComponent implements Runnable{
     private DatagramSocket sendDs;
     private DatagramSocket receiveDs;
     private DatagramPacket sendData;
-    private DatagramPacket sendData2;
     private DatagramPacket receiveData;
     private int port = 10086;
 
@@ -740,14 +739,11 @@ public class ChessboardComponent extends JComponent implements Runnable{
     public void send() throws IOException {
         sendDs = new DatagramSocket(1000);
 
-        byte[] data = (stringList.get(move-1)).getBytes();
-        byte[] data2 = (String.valueOf(n)).getBytes();
+        byte[] data = (stringList.get(move-1) + n).getBytes();
 
         sendData=new DatagramPacket(data,data.length,ia,port);
-        sendData2=new DatagramPacket(data2,data2.length,ia,port);
 
         sendDs.send(sendData);
-        sendDs.send(sendData2);
         sendDs.close();
     }
 

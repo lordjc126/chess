@@ -145,49 +145,103 @@ public class ChessboardComponent extends JComponent {
 
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
         GameSound Sound = new GameSound();
+        ChessComponent chess3 = chess2;
         // Note that chess1 has higher priority, 'destroys' chess2 if exists.
         Point pointI = calculatePoint(chess1.getChessboardPoint().getX(), chess1.getChessboardPoint().getY());
         Point pointF = calculatePoint(chess2.getChessboardPoint().getX(), chess2.getChessboardPoint().getY());
         java.util.Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            int xF = (int) pointF.getX();
-            int yF = (int) pointF.getY();
-            int xI = (int) pointI.getX();
-            int yI = (int) pointI.getY();
 
-            public void run() {
-                Sound.start();
-                    if (xF > xI) {
-                        xI++;
-                        chess1.setLocation(xI, yI);
-                        repaint();
-                        System.out.println(xI + " " + yI);
-                    } else if (xF < xI) {
-                        xI--;
-                        chess1.setLocation(xI, yI);
-                        repaint();
-                        System.out.println(xI + " " + yI);
-                    } else if (yF > yI) {
-                        yI++;
-                        chess1.setLocation(xI, yI);
-                        repaint();
-                        System.out.println(xI + " " + yI);
-                    } else if (yF < yI) {
+        boolean judge = chess1.getChessName().equals("h") || chess1.getChessName().equals("H") ||
+                chess1.getChessName().equals("e") || chess1.getChessName().equals("E") ||
+                chess1.getChessName().equals("a") || chess1.getChessName().equals("A");
+
+        if(judge) {
+            TimerTask timerTask1 = new TimerTask() {
+                int xF = (int) pointF.getX();
+                int yF = (int) pointF.getY();
+                int xI = (int) pointI.getX();
+                int yI = (int) pointI.getY();
+                int dx = Math.abs(xF - xI) / 5;
+                int remainx = Math.abs(Math.abs(xF - xI) - 5 * dx);
+                int dy = Math.abs(yF - yI) / 5;
+                int remainy = Math.abs(Math.abs(yF - yI) - 5 * dy);
+
+                public void run() {
+                    Sound.start();
+                if (Math.abs(xF - xI) != remainx && Math.abs(yF - yI) != remainy) {
+                        if (xF >= xI && yF >= yI) {
+                            xI += dx;
+                            yI += dy;
+                            chess1.setLocation(xI, yI);
+                            repaint();
+                            System.out.println(xI + " " + yI);
+                        } else if (xF < xI && yF > yI) {
+                            xI -= dx;
+                            yI += dy;
+                            chess1.setLocation(xI, yI);
+                            repaint();
+                            System.out.println(xI + " " + yI);
+                        } else if (xF > xI && yF < yI) {
+                            yI -= dy;
+                            xI += dx;
+                            chess1.setLocation(xI, yI);
+                            repaint();
+                            System.out.println(xI + " " + yI);
+                        } else if (xF < xI && yF < yI) {
+                            yI -= dy;
+                            xI -= dx;
+                            chess1.setLocation(xI, yI);
+                            repaint();
+                            System.out.println(xI + " " + yI);
+                        }
+                    } else {
+                        cancel();
+                    }
+                }
+            };
+            timer.scheduleAtFixedRate(timerTask1, 0, 40);
+        }else {
+            TimerTask timerTask2 = new TimerTask() {
+                int xF = (int) pointF.getX();
+                int yF = (int) pointF.getY();
+                int xI = (int) pointI.getX();
+                int yI = (int) pointI.getY();
+                int dx = Math.abs(xF - xI) / 5;
+                int remainx = Math.abs(Math.abs(xF - xI) - 5 * dx);
+                int dy = Math.abs(yF - yI) / 5;
+                int remainy = Math.abs(Math.abs(yF - yI) - 5 * dy);
+
+                public void run() {
+                    if (Math.abs(xF - xI) == 0 && yI > yF) {
                         yI--;
                         chess1.setLocation(xI, yI);
                         repaint();
                         System.out.println(xI + " " + yI);
-                    } else if (xI == xF && yI == yF) {
+                    } else if (Math.abs(xF - xI) == 0 && yI < yF) {
+                        yI++;
+                        chess1.setLocation(xI, yI);
                         repaint();
+                        System.out.println(xI + " " + yI);
+                    } else if (Math.abs(yF - yI) == 0 && xI < xF) {
+                        xI++;
+                        chess1.setLocation(xI, yI);
+                        repaint();
+                        System.out.println(xI + " " + yI);
+                    } else if (Math.abs(yF - yI) == 0 && xI > xF) {
+                        xI--;
+                        chess1.setLocation(xI, yI);
+                        repaint();
+                        System.out.println(xI + " " + yI);
+                    } else {
                         cancel();
                     }
                 }
-        };
-        timer.scheduleAtFixedRate(timerTask, 0, 5);
+            };
+            timer.scheduleAtFixedRate(timerTask2, 0, 1);
+        }
 
         //-----------------------------------------------------------------------------------------------------------------------------------Action
 
-        ChessComponent chess3 = chess2;
         if (!(chess2 instanceof EmptySlotComponent)) {
             remove(chess2);
             add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation()));
@@ -197,6 +251,45 @@ public class ChessboardComponent extends JComponent {
         chessboard[row1][col1] = chess1;
         int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
         chessboard[row2][col2] = chess2;
+
+        Point pointI2 = calculatePoint(chess1.getChessboardPoint().getX(), chess1.getChessboardPoint().getY());
+        java.util.Timer timer2 = new Timer();
+        TimerTask timerTask2 = new TimerTask() {
+            int xF2 =  (int)pointF.getX();
+            int yF2 = (int)pointF.getY();
+            int xI2 = (int)pointI2.getX();
+            int yI2 = (int)pointI2.getY();
+
+            public void run() {
+                Sound.start();
+                if (xF2 > xI2) {
+                    xI2++;
+                    chess1.setLocation(xI2, yI2);
+                    repaint();
+                    System.out.println(xI2 + " " + yI2);
+                } else if (xF2 < xI2) {
+                    xI2--;
+                    chess1.setLocation(xI2, yI2);
+                    repaint();
+                    System.out.println(xI2 + " " + yI2);
+                } else if (yF2 > yI2) {
+                    yI2++;
+                    chess1.setLocation(xI2, yI2);
+                    repaint();
+                    System.out.println(xI2 + " " + yI2);
+                } else if (yF2 < yI2) {
+                    yI2--;
+                    chess1.setLocation(xI2, yI2);
+                    repaint();
+                    System.out.println(xI2 + " " + yI2);
+                } else if (xI2 == xF2 && yI2 == yF2) {
+                    repaint();
+                    cancel();
+                }
+            }
+        };
+        timer2.scheduleAtFixedRate(timerTask2, 250, 5);
+
         if (chess3.getChessName().equals("g")) {
             Object[] options = {"再来一局", "退出"};
             int result = JOptionPane.showOptionDialog(this, "BLACK WIN!", "WIN", JOptionPane.YES_OPTION,

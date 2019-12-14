@@ -255,7 +255,15 @@ public class ChessGameFrame extends JFrame {
 
                         } else if (input.get(0).startsWith("@TOTAL_STEP=")) {
                             char[] array = input.get(0).toCharArray();
-                            int n = Integer.parseInt(String.valueOf(array[array.length - 1]));
+                            String n1 = "";
+
+                            for (int j = 0; j < array.length; j++) {
+                                if(Character.isDigit(array[j])){
+                                    n1 += array[j];
+                                }
+                            }
+
+                            int n = Integer.parseInt(n1);
                             char[] line;
 
                             for (int j = 0; j < n; j++) {

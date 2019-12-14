@@ -7,6 +7,7 @@ public class ChessboardPoint {
     public ChessboardPoint(int x, int y) {
         this.x = x;
         this.y = y;
+        id = "";
     }
 
     public int getX() {

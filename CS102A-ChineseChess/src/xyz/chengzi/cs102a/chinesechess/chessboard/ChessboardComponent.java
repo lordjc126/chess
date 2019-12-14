@@ -7,9 +7,8 @@ import xyz.chengzi.cs102a.chinesechess.listener.GameSound;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Timer;
@@ -24,15 +23,7 @@ public class ChessboardComponent extends JComponent {
     private int move = 0;//动了多少步
     private int n;
     private boolean stopUndoing = false;
-    private DatagramSocket send ;
-    private InetAddress ID1 ;
-    private InetAddress ID2 ;
-    private DatagramSocket ds ;
-    private DatagramPacket dpReceive;
-    private DatagramPacket dpSend ;
-    private Thread t = new Thread();
-    private int port=3021;
-
+    private Point realPoint;
 
 //-------------------------------------------------------------------------------------------------getter and setter
 
@@ -131,6 +122,8 @@ public class ChessboardComponent extends JComponent {
         initTestBoardSoldierRed(6, 4, ChessColor.RED);
         initTestBoardSoldierRed(6, 6, ChessColor.RED);
         initTestBoardSoldierRed(6, 8, ChessColor.RED);
+
+
     }
 
     public void setChessboardSize(int x, int y) {
@@ -190,7 +183,7 @@ public class ChessboardComponent extends JComponent {
                     }
                 }
         };
-        timer.scheduleAtFixedRate(timerTask, 0, 3);
+        timer.scheduleAtFixedRate(timerTask, 0, 5);
 
         //-----------------------------------------------------------------------------------------------------------------------------------Action
 
@@ -526,6 +519,7 @@ public class ChessboardComponent extends JComponent {
         int[] compare = {2, 2, 2, 2, 1, 2, 5};
         int[] red = new int[7];
         int[] black = new int[7];
+        boolean ifLessThan = true;
 
         for (int i = 0; i < c.length; i++) {
             if (c[i] == '.') {
@@ -578,9 +572,15 @@ public class ChessboardComponent extends JComponent {
             }
         }
 
+        for (int i = 0; i < 7; i++) {
+            if(red[i] > compare[i] || black[i] > compare[i]){
+                ifLessThan = false;
+            }
+        }
+
         if (ifSpaceMissing) {
             return 1;
-        } else if (!Arrays.equals(compare, red) || !Arrays.equals(compare, black)) {
+        } else if (!ifLessThan) {
             return 2;
         } else if (s.length() != 90) {
             return 3;
@@ -654,12 +654,15 @@ public class ChessboardComponent extends JComponent {
 
     }
 
+    //-------------------------------------------------------------------------------------------------paint
 
-    //-------------------------------------------------------------------------------------------------------------------------------------NetWork
-   /*public void send(){
-       byte[] data =null;
-       dpSend=new DatagramPacket(data,data.length,ID1,port);
-       ds.send(dpSend);
-   }*/
+    public void paint(Graphics g,int x,int y){
+        super.paint(g);
+        Shape s = new Ellipse2D.Double(x,y,20,20);
+        g.setColor(Color.green);
+        g.fillOval(0,0,20,20);
+        repaint();
+    }
+
 
 }

@@ -728,6 +728,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
     private DatagramSocket sendDs;
     private DatagramSocket receiveDs;
     private DatagramPacket sendData;
+    private DatagramPacket sendData2;
     private DatagramPacket receiveData;
     private int port = 10086;
 
@@ -738,13 +739,24 @@ public class ChessboardComponent extends JComponent implements Runnable{
 
     public void send() throws IOException {
         sendDs = new DatagramSocket(1000);
+
         byte[] data = (stringList.get(move-1)).getBytes();
+        byte[] data2 = (String.valueOf(n)).getBytes();
+
         sendData=new DatagramPacket(data,data.length,ia,port);
+        sendData2=new DatagramPacket(data2,data2.length,ia,port);
+
         sendDs.send(sendData);
+        sendDs.send(sendData2);
         sendDs.close();
     }
 
     public void receive() throws IOException {
+        char[] recei;
+        String board = "";
+        String number = "";
+
+
         receiveDs = new DatagramSocket(port);
         byte[] data = new byte[1024];
         receiveData = new DatagramPacket(data,data.length);
@@ -752,7 +764,20 @@ public class ChessboardComponent extends JComponent implements Runnable{
             receiveDs.receive(receiveData);
             String word = new String(receiveData.getData()).trim();
             stringList.add(word);
+
+            recei = new char[word.length()];
+            recei = word.toCharArray();
+
+            for (int i = 0; i < recei.length; i++) {
+                if(Character.isDigit(recei[i])){
+                    number += recei[i];
+                }else{
+                    board += recei[i];
+                }
+            }
+
             move++;
+
             if(currentColor == ChessColor.RED){
                 currentColor = ChessColor.BLACK;
                 whoTurn.setText("BLACK TURN");
@@ -763,6 +788,11 @@ public class ChessboardComponent extends JComponent implements Runnable{
                 whoTurn.setForeground(Color.RED);
             }
             loadGame(stringList.get(move-1));
+
+            if(!number.equals("0")){
+                loadGame(stringList.get(move-2-Integer.parseInt(number)));
+            }
+
         }
     }
 

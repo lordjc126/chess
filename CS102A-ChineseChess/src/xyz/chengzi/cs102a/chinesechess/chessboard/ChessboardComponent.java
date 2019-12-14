@@ -737,22 +737,30 @@ public class ChessboardComponent extends JComponent implements Runnable{
 
     public void send() throws IOException {
         sendDs = new DatagramSocket(1000);
-        byte[] data=("Fuck").getBytes();
+        byte[] data = initial().getBytes();
+        if(move>1) {
+            data = (stringList.get(move - 1)).getBytes();
+        }
         sendData=new DatagramPacket(data,data.length,ia,port);
-        System.out.println("sending");
         sendDs.send(sendData);
         sendDs.close();
     }
 
     public void receive() throws IOException {
-        System.out.println("r");
         receiveDs = new DatagramSocket(port);
         byte[] data = new byte[1024];
         receiveData = new DatagramPacket(data,data.length);
         while(true) {
             receiveDs.receive(receiveData);
             String word = new String(receiveData.getData()).trim();
-            System.out.println(word);
+            stringList.add(word);
+            move++;
+            if(currentColor == ChessColor.RED){
+                currentColor = ChessColor.BLACK;
+            }else{
+                currentColor = ChessColor.RED;
+            }
+            loadGame(stringList.get(move-1));
         }
     }
 

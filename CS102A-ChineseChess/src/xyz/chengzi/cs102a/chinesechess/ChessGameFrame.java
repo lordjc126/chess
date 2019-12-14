@@ -441,11 +441,16 @@ public class ChessGameFrame extends JFrame {
         this.getLayeredPane().add(background, new Integer(Integer.MIN_VALUE));
         background.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
     }
-    /*public static void main(String[] args) {
+    /*public static void main(String[] args) throws IOException {
         MainFrame mainFrame = new MainFrame();
         SwingUtilities.invokeLater(() ->
         {
-            ChessGameFrame chessFrame = new ChessGameFrame();
+            ChessGameFrame chessFrame = null;
+            try {
+                chessFrame = new ChessGameFrame();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             chessFrame.setVisible(true);
         });
     }*/

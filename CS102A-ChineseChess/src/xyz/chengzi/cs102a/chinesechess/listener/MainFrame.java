@@ -3,6 +3,8 @@ package xyz.chengzi.cs102a.chinesechess.listener;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
 import xyz.chengzi.cs102a.chinesechess.ChessGameFrame;
+import xyz.chengzi.cs102a.chinesechess.chess.ChessComponent;
+import xyz.chengzi.cs102a.chinesechess.chessboard.ChessboardComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,6 +48,7 @@ public class MainFrame extends JFrame implements ActionListener {
         button2.setLocation(0, 0);
         button3.setLocation(0, 0);
         button1.addActionListener(this);
+        button2.addActionListener(this);
         button3.addActionListener(this);
         button1.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.red));
         button2.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.green));
@@ -81,16 +84,8 @@ public class MainFrame extends JFrame implements ActionListener {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-
             chessFrame.setVisible(true);
-            /*chessFrame.addComponentListener(new ComponentAdapter() {
-                public void componentResized(ComponentEvent e) {
-                    int windowWidth = chessFrame.getWidth();
-                    int windowHeight = chessFrame.getHeight();
-                    chessFrame.setX(windowWidth);
-                    chessFrame.setY(windowHeight);
-                }
-            });*/
+
 
         } else if (e.getSource() == button3) {
             try {
@@ -99,13 +94,25 @@ public class MainFrame extends JFrame implements ActionListener {
                 ex.printStackTrace();
             }
             this.dispose();
+            mainframeMusic.stop();
         }
         else if(e.getSource() == button2){
+            this.dispose();
+
             try {
                 mainframeMusic.playSound();
+                mainframeMusic.stop();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+
+            ChessGameFrame chessFrame = null;
+            try {
+                chessFrame = new ChessGameFrame();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            chessFrame.setVisible(true);
         }
     }
 

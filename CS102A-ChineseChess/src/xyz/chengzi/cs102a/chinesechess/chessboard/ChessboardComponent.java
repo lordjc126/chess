@@ -7,6 +7,9 @@ import xyz.chengzi.cs102a.chinesechess.listener.GameSound;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Timer;
@@ -21,7 +24,14 @@ public class ChessboardComponent extends JComponent {
     private int move = 0;//动了多少步
     private int n;
     private boolean stopUndoing = false;
-    private Point realPoint;
+    private DatagramSocket send ;
+    private InetAddress ID1 ;
+    private InetAddress ID2 ;
+    private DatagramSocket ds ;
+    private DatagramPacket dpReceive;
+    private DatagramPacket dpSend ;
+    private Thread t = new Thread();
+    private int port=3021;
 
 
 //-------------------------------------------------------------------------------------------------getter and setter
@@ -180,7 +190,7 @@ public class ChessboardComponent extends JComponent {
                     }
                 }
         };
-        timer.scheduleAtFixedRate(timerTask, 0, 5);
+        timer.scheduleAtFixedRate(timerTask, 0, 3);
 
         //-----------------------------------------------------------------------------------------------------------------------------------Action
 
@@ -643,5 +653,13 @@ public class ChessboardComponent extends JComponent {
         }
 
     }
+
+
+    //-------------------------------------------------------------------------------------------------------------------------------------NetWork
+   /*public void send(){
+       byte[] data =null;
+       dpSend=new DatagramPacket(data,data.length,ID1,port);
+       ds.send(dpSend);
+   }*/
 
 }

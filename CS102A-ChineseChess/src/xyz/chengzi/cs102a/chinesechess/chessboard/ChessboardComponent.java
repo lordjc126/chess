@@ -9,12 +9,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ChessboardComponent extends JComponent {
+public class ChessboardComponent extends JComponent implements Runnable{
     private ChessListener chessListener = new ChessboardChessListener(this);
     private ChessComponent[][] chessboard = new ChessComponent[10][9];
     private ChessColor currentColor = ChessColor.RED;
@@ -23,7 +25,7 @@ public class ChessboardComponent extends JComponent {
     private int move = 0;//动了多少步
     private int n;
     private boolean stopUndoing = false;
-    private Point realPoint;
+
 
 //-------------------------------------------------------------------------------------------------getter and setter
 
@@ -77,7 +79,7 @@ public class ChessboardComponent extends JComponent {
 
     //-----------------------------------------------------------------------------------------------------constructor
 
-    public ChessboardComponent(int width, int height, JLabel l) {
+    public ChessboardComponent(int width, int height, JLabel l) throws UnknownHostException {
         setLayout(null); // Use absolute layout.
         setSize(width, height);
         whoTurn = l;
@@ -145,6 +147,11 @@ public class ChessboardComponent extends JComponent {
 
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
         GameSound Sound = new GameSound();
+        try {
+            send();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         ChessComponent chess3 = chess2;
         // Note that chess1 has higher priority, 'destroys' chess2 if exists.
         Point pointI = calculatePoint(chess1.getChessboardPoint().getX(), chess1.getChessboardPoint().getY());
@@ -231,6 +238,7 @@ public class ChessboardComponent extends JComponent {
                         System.out.println(xI + " " + yI);
                     } else {
                         cancel();
+
                     }
                 }
             };
@@ -716,5 +724,46 @@ public class ChessboardComponent extends JComponent {
         repaint();
     }
 
+    private DatagramSocket sendDs;
+    private DatagramSocket receiveDs;
+    private DatagramPacket sendData;
+    private DatagramPacket receiveData;
+    private int port = 10086;
+
+
+    InetAddress ia = InetAddress.getByName("127.0.0.1");
+
+
+
+    public void send() throws IOException {
+        sendDs = new DatagramSocket(1000);
+        byte[] data=("Fuck").getBytes();
+        sendData=new DatagramPacket(data,data.length,ia,port);
+        System.out.println("sending");
+        sendDs.send(sendData);
+        sendDs.close();
+    }
+
+    public void receive() throws IOException {
+        System.out.println("r");
+        receiveDs = new DatagramSocket(port);
+        byte[] data = new byte[1024];
+        receiveData = new DatagramPacket(data,data.length);
+        while(true) {
+            receiveDs.receive(receiveData);
+            String word = new String(receiveData.getData()).trim();
+            System.out.println(word);
+        }
+    }
+
+
+    @Override
+    public void run() {
+        try {
+            receive();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

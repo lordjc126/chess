@@ -774,6 +774,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
                 if (move - n >= 2) {
                     loadGame(stringList.get(move - 2 - n));
                     n++;
+                    System.out.println(stringList.get(move - 2 - n));
                     if(currentColor == ChessColor.RED){
                         currentColor = ChessColor.BLACK;
                         whoTurn.setText("BLACK TURN");

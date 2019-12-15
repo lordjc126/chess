@@ -211,6 +211,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
                 int yI = (int) pointI.getY();
 
                 public void run() {
+                    Sound.start();
                     if (Math.abs(xF - xI) == 0 && yI > yF) {
                         yI--;
                         chess1.setLocation(xI, yI);

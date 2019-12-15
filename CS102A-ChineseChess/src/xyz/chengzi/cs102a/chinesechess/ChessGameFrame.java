@@ -29,6 +29,15 @@ public class ChessGameFrame extends JFrame {
     private DatagramSocket sendDs;
     private DatagramPacket sendData;
     private int port = 10086;
+    private boolean If = false;
+
+    public boolean isIf() {
+        return If;
+    }
+
+    public void setIf(boolean anIf) {
+        If = anIf;
+    }
 
     @Override
     public int getX() {
@@ -88,6 +97,9 @@ public class ChessGameFrame extends JFrame {
 
         add(chessboard);
         add(statusLabel);
+        if(If){
+            chessboard.setWhetherNet(true);
+        }
 
         JButton button = new JButton("点开有惊喜哦");
         button.addActionListener((e) -> JOptionPane.showMessageDialog(this, "Fuck You!"));
@@ -203,7 +215,7 @@ public class ChessGameFrame extends JFrame {
             public void send() throws IOException {
                 sendDs = new DatagramSocket(1000);
 
-                byte[] data = (1+chessboard.getStringList().get(chessboard.getMove() - chessboard.getN())).getBytes();
+                byte[] data = (1+chessboard.getStringList().get(chessboard.getMove() - chessboard.getN()-1)).getBytes();
 
                 sendData=new DatagramPacket(data,data.length,ia,port);
                 sendDs.send(sendData);

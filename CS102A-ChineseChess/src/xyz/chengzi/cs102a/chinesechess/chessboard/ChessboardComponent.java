@@ -25,6 +25,11 @@ public class ChessboardComponent extends JComponent implements Runnable{
     private int move = 0;//动了多少步
     private int n = 0;
     private boolean stopUndoing = false;
+    private boolean whetherNet = false;
+
+    public void setWhetherNet(boolean whetherNet) {
+        this.whetherNet = whetherNet;
+    }
 
 
 //-------------------------------------------------------------------------------------------------getter and setter
@@ -747,76 +752,75 @@ public class ChessboardComponent extends JComponent implements Runnable{
     }
 
     public void receive() throws IOException {
+        if (whetherNet) {
+            receiveDs = new DatagramSocket(port);
+            byte[] data = new byte[1024];
+            receiveData = new DatagramPacket(data, data.length);
+            while (true) {
+                receiveDs.receive(receiveData);
+                String word = new String(receiveData.getData()).trim();
 
-        receiveDs = new DatagramSocket(port);
-        byte[] data = new byte[1024];
-        receiveData = new DatagramPacket(data,data.length);
-        while(true) {
-            receiveDs.receive(receiveData);
-            String word = new String(receiveData.getData()).trim();
+                if (!word.startsWith("0") && !word.startsWith("1")) {
+                    stringList.add(word);
+                    System.out.println(stringList.size());
+                    System.out.println(word);
+                    move++;
 
-            if(!word.startsWith("0") && !word.startsWith("1")){
-                stringList.add(word);
-                System.out.println(stringList.size());
-                System.out.println(word);
-                move++;
-
-                if(currentColor == ChessColor.RED){
-                    currentColor = ChessColor.BLACK;
-                    whoTurn.setText("BLACK TURN");
-                    whoTurn.setForeground(Color.BLACK);
-                }else{
-                    currentColor = ChessColor.RED;
-                    whoTurn.setText("RED TURN");
-                    whoTurn.setForeground(Color.RED);
-                }
-                loadGame(stringList.get(move-1));
-            }else if(word.startsWith("0")){
-                if (move - n >= 2) {
-                    loadGame(stringList.get(move - 2 - n));
-                    n++;
-                    System.out.println("b");
-                    if(currentColor == ChessColor.RED){
+                    if (currentColor == ChessColor.RED) {
                         currentColor = ChessColor.BLACK;
                         whoTurn.setText("BLACK TURN");
                         whoTurn.setForeground(Color.BLACK);
-                    }else{
+                    } else {
                         currentColor = ChessColor.RED;
                         whoTurn.setText("RED TURN");
                         whoTurn.setForeground(Color.RED);
                     }
-                    stopUndoing = true;
-                } else if (move - n == 1) {
-                    loadGame(initial());
-                    currentColor = ChessColor.RED;
-                    whoTurn.setText("RED TURN");
-                    whoTurn.setForeground(Color.RED);
-                    n++;
-                    stopUndoing = true;
-                }
-
-            }else if(word.startsWith("1")){
-                System.out.println("c");
-                if (n > 0) {
-                    System.out.println("c1");
-                    loadGame(stringList.get(move - n));
-                    n--;
-                    if(currentColor == ChessColor.RED){
-                        currentColor = ChessColor.BLACK;
-                        whoTurn.setText("BLACK TURN");
-                        whoTurn.setForeground(Color.BLACK);
-                    }else{
+                    loadGame(stringList.get(move - 1));
+                } else if (word.startsWith("0")) {
+                    if (move - n >= 2) {
+                        loadGame(stringList.get(move - 2 - n));
+                        n++;
+                        System.out.println("b");
+                        if (currentColor == ChessColor.RED) {
+                            currentColor = ChessColor.BLACK;
+                            whoTurn.setText("BLACK TURN");
+                            whoTurn.setForeground(Color.BLACK);
+                        } else {
+                            currentColor = ChessColor.RED;
+                            whoTurn.setText("RED TURN");
+                            whoTurn.setForeground(Color.RED);
+                        }
+                        stopUndoing = true;
+                    } else if (move - n == 1) {
+                        loadGame(initial());
                         currentColor = ChessColor.RED;
                         whoTurn.setText("RED TURN");
                         whoTurn.setForeground(Color.RED);
+                        n++;
+                        stopUndoing = true;
+                    }
+
+                } else if (word.startsWith("1")) {
+                    System.out.println("c");
+                    if (n > 0) {
+                        System.out.println("c1");
+                        loadGame(stringList.get(move - n));
+                        n--;
+                        if (currentColor == ChessColor.RED) {
+                            currentColor = ChessColor.BLACK;
+                            whoTurn.setText("BLACK TURN");
+                            whoTurn.setForeground(Color.BLACK);
+                        } else {
+                            currentColor = ChessColor.RED;
+                            whoTurn.setText("RED TURN");
+                            whoTurn.setForeground(Color.RED);
+                        }
                     }
                 }
+
             }
-
         }
     }
-
-
 
     @Override
     public void run() {

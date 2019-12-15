@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 
 public class ChessGameFrame extends JFrame {
@@ -25,6 +26,9 @@ public class ChessGameFrame extends JFrame {
     private GameMusic1 bgm1 = new GameMusic1();
     private GameMusic2 bgm2 = new GameMusic2();
     private GameMusic3 bgm3 = new GameMusic3();
+    private DatagramSocket sendDs;
+    private DatagramPacket sendData;
+    private int port = 10086;
 
     @Override
     public int getX() {
@@ -145,6 +149,20 @@ public class ChessGameFrame extends JFrame {
                     chessboard.setStopUndoing(true);
                 }
             }
+
+            InetAddress ia = InetAddress.getByName("10.17.117.22");
+
+            public void send() throws IOException {
+                sendDs = new DatagramSocket(1000);
+
+                byte[] data = ("Undo").getBytes();
+
+                sendData=new DatagramPacket(data,data.length,ia,port);
+
+                sendDs.send(sendData);
+                sendDs.close();
+            }
+
         });
 
 
@@ -165,6 +183,20 @@ public class ChessGameFrame extends JFrame {
                     }
                 }
             }
+
+            InetAddress ia = InetAddress.getByName("10.17.117.22");
+
+            public void send() throws IOException {
+                sendDs = new DatagramSocket(1000);
+
+                byte[] data = ("UndoUndo").getBytes();
+
+                sendData=new DatagramPacket(data,data.length,ia,port);
+
+                sendDs.send(sendData);
+                sendDs.close();
+            }
+
         });
 
 

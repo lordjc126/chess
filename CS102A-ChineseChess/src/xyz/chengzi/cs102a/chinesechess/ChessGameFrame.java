@@ -128,6 +128,7 @@ public class ChessGameFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (chessboard.getMove() - chessboard.getN() >= 2) {
+                    System.out.println(chessboard.getStringList().get(chessboard.getMove() - 2 - chessboard.getN()));
                     chessboard.loadGame(chessboard.getStringList().get(chessboard.getMove() - 2 - chessboard.getN()));
                     chessboard.setN(chessboard.getN() + 1);
                     if (chessboard.getCurrentColor() == ChessColor.RED) {
@@ -157,7 +158,7 @@ public class ChessGameFrame extends JFrame {
 
             }
 
-            InetAddress ia = InetAddress.getByName("10.17.117.22");
+            InetAddress ia = InetAddress.getByName("10.17.91.233");
 
             public void send() throws IOException {
                 sendDs = new DatagramSocket(1000);
@@ -200,7 +201,7 @@ public class ChessGameFrame extends JFrame {
 
             }
 
-            InetAddress ia = InetAddress.getByName("10.17.117.22");
+            InetAddress ia = InetAddress.getByName("10.17.91.233");
 
             public void send() throws IOException {
                 sendDs = new DatagramSocket(1000);

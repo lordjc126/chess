@@ -165,11 +165,10 @@ public class ChessGameFrame extends JFrame {
                 byte[] data = ("Undo").getBytes();
 
                 sendData=new DatagramPacket(data,data.length,ia,port);
-
-                sendDs.send(sendData);
                 for (int i = 0; i < data.length; i++) {
                     data[i] = 0;
                 }
+                sendDs.send(sendData);
                 sendDs.close();
             }
 
@@ -209,11 +208,10 @@ public class ChessGameFrame extends JFrame {
                 byte[] data = ("UndoUndo").getBytes();
 
                 sendData=new DatagramPacket(data,data.length,ia,port);
-
-                sendDs.send(sendData);
                 for (int i = 0; i < data.length; i++) {
                     data[i] = 0;
                 }
+                sendDs.send(sendData);
                 sendDs.close();
             }
 

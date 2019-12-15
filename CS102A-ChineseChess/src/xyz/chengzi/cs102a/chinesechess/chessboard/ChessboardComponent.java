@@ -147,7 +147,6 @@ public class ChessboardComponent extends JComponent implements Runnable{
 
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
         GameSound Sound = new GameSound();
-        Sound.start();
         ChessComponent chess3 = chess2;
         // Note that chess1 has higher priority, 'destroys' chess2 if exists.
         Point pointI = calculatePoint(chess1.getChessboardPoint().getX(), chess1.getChessboardPoint().getY());
@@ -170,7 +169,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
                 int remainy = Math.abs(Math.abs(yF - yI) - 5 * dy);
 
                 public void run() {
-
+                    Sound.start();
                 if (Math.abs(xF - xI) != remainx && Math.abs(yF - yI) != remainy) {
                         if (xF >= xI && yF >= yI) {
                             xI += dx;
@@ -212,6 +211,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
                 int yI = (int) pointI.getY();
 
                 public void run() {
+                    Sound.start();
                     if (Math.abs(xF - xI) == 0 && yI > yF) {
                         yI--;
                         chess1.setLocation(xI, yI);
@@ -725,7 +725,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
         g.fillOval(0,0,20,20);
         repaint();
     }
-//---------------------------------------------------------------------------------------------------------------------------------------Net
+
     private DatagramSocket sendDs;
     private DatagramSocket receiveDs;
     private DatagramPacket sendData;
@@ -733,7 +733,8 @@ public class ChessboardComponent extends JComponent implements Runnable{
     private int port = 10086;
 
 
-    InetAddress ia = InetAddress.getByName("10.17.91.233");
+    InetAddress ia = InetAddress.getByName("10.17.117.22");
+
 
 
     public void send() throws IOException {
@@ -748,10 +749,6 @@ public class ChessboardComponent extends JComponent implements Runnable{
     }
 
     public void receive() throws IOException {
-        char[] recei;
-        String board = "";
-        String number = "";
-
 
         receiveDs = new DatagramSocket(port);
         byte[] data = new byte[1024];
@@ -759,41 +756,64 @@ public class ChessboardComponent extends JComponent implements Runnable{
         while(true) {
             receiveDs.receive(receiveData);
             String word = new String(receiveData.getData()).trim();
-            stringList.add(word);
 
-            recei = new char[word.length()];
-            recei = word.toCharArray();
+            if(!word.equals("Undo") && !word.equals("UndoUndo")){
+                stringList.add(word);
+                move++;
 
-            for (int i = 0; i < recei.length; i++) {
-                if(Character.isDigit(recei[i])){
-                    number += recei[i];
+                if(currentColor == ChessColor.RED){
+                    currentColor = ChessColor.BLACK;
+                    whoTurn.setText("BLACK TURN");
+                    whoTurn.setForeground(Color.BLACK);
                 }else{
-                    board += recei[i];
+                    currentColor = ChessColor.RED;
+                    whoTurn.setText("RED TURN");
+                    whoTurn.setForeground(Color.RED);
                 }
-            }
+                loadGame(stringList.get(move-1));
+            }else if(word.equals("Undo")){
+                if (move - n >= 2) {
+                    loadGame(stringList.get(move - 2 - n));
+                    n++;
+                    System.out.println(stringList.get(move - 2 - n));
+                    if(currentColor == ChessColor.RED){
+                        currentColor = ChessColor.BLACK;
+                        whoTurn.setText("BLACK TURN");
+                        whoTurn.setForeground(Color.BLACK);
+                    }else{
+                        currentColor = ChessColor.RED;
+                        whoTurn.setText("RED TURN");
+                        whoTurn.setForeground(Color.RED);
+                    }
+                    stopUndoing = true;
+                } else if (move - n == 1) {
+                    loadGame(initial());
+                    currentColor = ChessColor.RED;
+                    whoTurn.setText("RED TURN");
+                    whoTurn.setForeground(Color.RED);
+                    n++;
+                    stopUndoing = true;
+                }
 
-            move++;
-
-            if(currentColor == ChessColor.RED){
-                currentColor = ChessColor.BLACK;
-                whoTurn.setText("BLACK TURN");
-                whoTurn.setForeground(Color.BLACK);
-            }else{
-                currentColor = ChessColor.RED;
-                whoTurn.setText("RED TURN");
-                whoTurn.setForeground(Color.RED);
-            }
-            loadGame(stringList.get(move-1));
-            System.out.println(number);
-            board = "";
-            number = "";
-
-            if(!number.equals("0")){
-                loadGame(stringList.get(move-2-Integer.parseInt(number)));
+            }else if(word.equals("UndoUndo")){
+                if (n > 0) {
+                    loadGame(stringList.get(move - n));
+                    n--;
+                    if(currentColor == ChessColor.RED){
+                        currentColor = ChessColor.BLACK;
+                        whoTurn.setText("BLACK TURN");
+                        whoTurn.setForeground(Color.BLACK);
+                    }else{
+                        currentColor = ChessColor.RED;
+                        whoTurn.setText("RED TURN");
+                        whoTurn.setForeground(Color.RED);
+                    }
+                }
             }
 
         }
     }
+
 
 
     @Override

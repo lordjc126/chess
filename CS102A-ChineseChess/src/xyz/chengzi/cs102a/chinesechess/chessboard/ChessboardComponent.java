@@ -740,11 +740,14 @@ public class ChessboardComponent extends JComponent implements Runnable{
     public void send() throws IOException {
         sendDs = new DatagramSocket(1000);
 
-        byte[] data = (stringList.get(move-1) + n).getBytes();
+        byte[] data = (stringList.get(move-1)).getBytes();
 
         sendData=new DatagramPacket(data,data.length,ia,port);
 
         sendDs.send(sendData);
+        for (int i = 0; i < data.length; i++) {
+            data[i] = 0;
+        }
         sendDs.close();
     }
 
@@ -759,6 +762,8 @@ public class ChessboardComponent extends JComponent implements Runnable{
 
             if(!word.equals("Undo") && !word.equals("UndoUndo")){
                 stringList.add(word);
+                System.out.println("a");
+                System.out.println(word);
                 move++;
 
                 if(currentColor == ChessColor.RED){
@@ -775,7 +780,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
                 if (move - n >= 2) {
                     loadGame(stringList.get(move - 2 - n));
                     n++;
-                    System.out.println(stringList.get(move - 2 - n));
+                    System.out.println("b");
                     if(currentColor == ChessColor.RED){
                         currentColor = ChessColor.BLACK;
                         whoTurn.setText("BLACK TURN");
@@ -796,7 +801,9 @@ public class ChessboardComponent extends JComponent implements Runnable{
                 }
 
             }else if(word.equals("UndoUndo")){
+                System.out.println("c");
                 if (n > 0) {
+                    System.out.println("c1");
                     loadGame(stringList.get(move - n));
                     n--;
                     if(currentColor == ChessColor.RED){

@@ -162,12 +162,9 @@ public class ChessGameFrame extends JFrame {
             public void send() throws IOException {
                 sendDs = new DatagramSocket(1000);
 
-                byte[] data = ("Undo").getBytes();
+                byte[] data = (chessboard.getStringList().get(chessboard.getMove() - 2 - chessboard.getN())).getBytes();
 
                 sendData=new DatagramPacket(data,data.length,ia,port);
-                for (int i = 0; i < data.length; i++) {
-                    data[i] = 0;
-                }
                 sendDs.send(sendData);
                 sendDs.close();
             }
@@ -205,12 +202,9 @@ public class ChessGameFrame extends JFrame {
             public void send() throws IOException {
                 sendDs = new DatagramSocket(1000);
 
-                byte[] data = ("UndoUndo").getBytes();
+                byte[] data = (chessboard.getStringList().get(chessboard.getMove() - chessboard.getN())).getBytes();
 
                 sendData=new DatagramPacket(data,data.length,ia,port);
-                for (int i = 0; i < data.length; i++) {
-                    data[i] = 0;
-                }
                 sendDs.send(sendData);
                 sendDs.close();
             }

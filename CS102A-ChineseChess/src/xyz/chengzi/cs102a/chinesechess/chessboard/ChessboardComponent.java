@@ -743,9 +743,9 @@ public class ChessboardComponent extends JComponent implements Runnable{
         byte[] data = (stringList.get(move-1)).getBytes();
 
         sendData=new DatagramPacket(data,data.length,ia,port);
-        for (int i = 0; i < data.length; i++) {
-            data[i] = 0;
-        }
+//        for (int i = 0; i < data.length; i++) {
+//            data[i] = 0;
+//        }
         sendDs.send(sendData);
         sendDs.close();
     }

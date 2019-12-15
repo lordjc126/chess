@@ -158,12 +158,12 @@ public class ChessGameFrame extends JFrame {
 
             }
 
-            InetAddress ia = InetAddress.getByName("10.17.91.233");
+            InetAddress ia = InetAddress.getByName("10.17.117.22");
 
             public void send() throws IOException {
                 sendDs = new DatagramSocket(1000);
 
-                byte[] data = (chessboard.getStringList().get(chessboard.getMove() - 2 - chessboard.getN())).getBytes();
+                byte[] data = (chessboard.getStringList().get(chessboard.getMove() - 2 - chessboard.getN())+0).getBytes();
 
                 sendData=new DatagramPacket(data,data.length,ia,port);
                 sendDs.send(sendData);
@@ -198,12 +198,12 @@ public class ChessGameFrame extends JFrame {
 
             }
 
-            InetAddress ia = InetAddress.getByName("10.17.91.233");
+            InetAddress ia = InetAddress.getByName("10.17.117.22");
 
             public void send() throws IOException {
                 sendDs = new DatagramSocket(1000);
 
-                byte[] data = (chessboard.getStringList().get(chessboard.getMove() - chessboard.getN())).getBytes();
+                byte[] data = (chessboard.getStringList().get(chessboard.getMove() - chessboard.getN())+1).getBytes();
 
                 sendData=new DatagramPacket(data,data.length,ia,port);
                 sendDs.send(sendData);

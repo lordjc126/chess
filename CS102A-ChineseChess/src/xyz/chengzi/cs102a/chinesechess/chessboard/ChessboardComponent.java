@@ -733,7 +733,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
     private int port = 10086;
 
 
-    InetAddress ia = InetAddress.getByName("10.17.91.233");
+    InetAddress ia = InetAddress.getByName("10.17.117.22");
 
 
 
@@ -760,9 +760,9 @@ public class ChessboardComponent extends JComponent implements Runnable{
             receiveDs.receive(receiveData);
             String word = new String(receiveData.getData()).trim();
 
-            if(!word.equals("Undo") && !word.equals("UndoUndo")){
+            if(!word.endsWith("0") && !word.endsWith("1")){
                 stringList.add(word);
-                System.out.println("a");
+                System.out.println(stringList.size());
                 System.out.println(word);
                 move++;
 
@@ -776,7 +776,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
                     whoTurn.setForeground(Color.RED);
                 }
                 loadGame(stringList.get(move-1));
-            }else if(word.equals("Undo")){
+            }else if(word.endsWith("0")){
                 if (move - n >= 2) {
                     loadGame(stringList.get(move - 2 - n));
                     n++;
@@ -800,7 +800,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
                     stopUndoing = true;
                 }
 
-            }else if(word.equals("UndoUndo")){
+            }else if(word.endsWith("1")){
                 System.out.println("c");
                 if (n > 0) {
                     System.out.println("c1");

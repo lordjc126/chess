@@ -751,6 +751,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
         sendDs.close();
     }
 
+
     public void receive() throws IOException {
         if (whetherNet) {
             receiveDs = new DatagramSocket(port);

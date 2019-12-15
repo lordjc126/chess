@@ -37,6 +37,7 @@ public class ChessGameFrame extends JFrame {
 
     public void setIf(boolean anIf) {
         If = anIf;
+        System.out.println(If);
     }
 
     @Override
@@ -61,13 +62,14 @@ public class ChessGameFrame extends JFrame {
         return statusLabel;
     }
 
-    public ChessGameFrame() throws IOException {
+    public ChessGameFrame(boolean b) throws IOException {
         setTitle("Chinese Chess");
         setSize(x, y);
         setLocationRelativeTo(null); // Center the window.
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
         setBak();
+        If = b;
 
 
         statusLabel = new JLabel("RED TURN");
@@ -76,6 +78,9 @@ public class ChessGameFrame extends JFrame {
         statusLabel.setForeground(Color.RED);
         statusLabel.setSize(200, 30);
         ChessboardComponent chessboard = new ChessboardComponent(500, 560, statusLabel);
+        if(If){
+            chessboard.setWhetherNet(true);
+        }
         new Thread(chessboard).start();
 
 
@@ -97,9 +102,6 @@ public class ChessGameFrame extends JFrame {
 
         add(chessboard);
         add(statusLabel);
-        if(If){
-            chessboard.setWhetherNet(true);
-        }
 
         JButton button = new JButton("点开有惊喜哦");
         button.addActionListener((e) -> JOptionPane.showMessageDialog(this, "Fuck You!"));

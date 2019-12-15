@@ -80,8 +80,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
             ChessGameFrame chessFrame = null;
             try {
-                chessFrame = new ChessGameFrame();
-                chessFrame.setIf(false);
+                chessFrame = new ChessGameFrame(false);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -109,8 +108,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
             ChessGameFrame chessFrame = null;
             try {
-                chessFrame = new ChessGameFrame();
-                chessFrame.setIf(true);
+                chessFrame = new ChessGameFrame(true);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

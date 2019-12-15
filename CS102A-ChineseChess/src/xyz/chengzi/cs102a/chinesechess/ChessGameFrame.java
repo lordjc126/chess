@@ -148,6 +148,13 @@ public class ChessGameFrame extends JFrame {
                     chessboard.setN(chessboard.getN() + 1);
                     chessboard.setStopUndoing(true);
                 }
+
+                try {
+                    send();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             InetAddress ia = InetAddress.getByName("10.17.117.22");
@@ -182,6 +189,13 @@ public class ChessGameFrame extends JFrame {
                         chessboard.getWhoTurn().setForeground(Color.RED);
                     }
                 }
+
+                try {
+                    send();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             InetAddress ia = InetAddress.getByName("10.17.117.22");

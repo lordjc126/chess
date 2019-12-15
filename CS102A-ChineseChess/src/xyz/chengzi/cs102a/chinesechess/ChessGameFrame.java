@@ -167,6 +167,9 @@ public class ChessGameFrame extends JFrame {
                 sendData=new DatagramPacket(data,data.length,ia,port);
 
                 sendDs.send(sendData);
+                for (int i = 0; i < data.length; i++) {
+                    data[i] = 0;
+                }
                 sendDs.close();
             }
 
@@ -208,6 +211,9 @@ public class ChessGameFrame extends JFrame {
                 sendData=new DatagramPacket(data,data.length,ia,port);
 
                 sendDs.send(sendData);
+                for (int i = 0; i < data.length; i++) {
+                    data[i] = 0;
+                }
                 sendDs.close();
             }
 

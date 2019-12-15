@@ -736,17 +736,12 @@ public class ChessboardComponent extends JComponent implements Runnable{
     InetAddress ia = InetAddress.getByName("10.17.117.22");
 
 
-
-
     public void send() throws IOException {
         sendDs = new DatagramSocket(1000);
 
         byte[] data = (stringList.get(move-1)).getBytes();
 
         sendData=new DatagramPacket(data,data.length,ia,port);
-//        for (int i = 0; i < data.length; i++) {
-//            data[i] = 0;
-//        }
         sendDs.send(sendData);
         sendDs.close();
     }
@@ -760,7 +755,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
             receiveDs.receive(receiveData);
             String word = new String(receiveData.getData()).trim();
 
-            if(!word.endsWith("0") && !word.endsWith("1")){
+            if(!word.startsWith("0") && !word.startsWith("1")){
                 stringList.add(word);
                 System.out.println(stringList.size());
                 System.out.println(word);
@@ -776,7 +771,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
                     whoTurn.setForeground(Color.RED);
                 }
                 loadGame(stringList.get(move-1));
-            }else if(word.endsWith("0")){
+            }else if(word.startsWith("0")){
                 if (move - n >= 2) {
                     loadGame(stringList.get(move - 2 - n));
                     n++;
@@ -800,7 +795,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
                     stopUndoing = true;
                 }
 
-            }else if(word.endsWith("1")){
+            }else if(word.startsWith("1")){
                 System.out.println("c");
                 if (n > 0) {
                     System.out.println("c1");

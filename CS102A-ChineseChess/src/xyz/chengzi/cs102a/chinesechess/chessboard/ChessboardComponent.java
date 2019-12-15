@@ -176,25 +176,25 @@ public class ChessboardComponent extends JComponent implements Runnable{
                             yI += dy;
                             chess1.setLocation(xI, yI);
                             repaint();
-                            System.out.println(xI + " " + yI);
+//                            System.out.println(xI + " " + yI);
                         } else if (xF < xI && yF > yI) {
                             xI -= dx;
                             yI += dy;
                             chess1.setLocation(xI, yI);
                             repaint();
-                            System.out.println(xI + " " + yI);
+//                            System.out.println(xI + " " + yI);
                         } else if (xF > xI && yF < yI) {
                             yI -= dy;
                             xI += dx;
                             chess1.setLocation(xI, yI);
                             repaint();
-                            System.out.println(xI + " " + yI);
+//                            System.out.println(xI + " " + yI);
                         } else if (xF < xI && yF < yI) {
                             yI -= dy;
                             xI -= dx;
                             chess1.setLocation(xI, yI);
                             repaint();
-                            System.out.println(xI + " " + yI);
+//                            System.out.println(xI + " " + yI);
                         }
                     } else {
                         loadGame(stringList.get(move-1));
@@ -216,22 +216,22 @@ public class ChessboardComponent extends JComponent implements Runnable{
                         yI--;
                         chess1.setLocation(xI, yI);
                         repaint();
-                        System.out.println(xI + " " + yI);
+//                        System.out.println(xI + " " + yI);
                     } else if (Math.abs(xF - xI) == 0 && yI < yF) {
                         yI++;
                         chess1.setLocation(xI, yI);
                         repaint();
-                        System.out.println(xI + " " + yI);
+//                        System.out.println(xI + " " + yI);
                     } else if (Math.abs(yF - yI) == 0 && xI < xF) {
                         xI++;
                         chess1.setLocation(xI, yI);
                         repaint();
-                        System.out.println(xI + " " + yI);
+//                        System.out.println(xI + " " + yI);
                     } else if (Math.abs(yF - yI) == 0 && xI > xF) {
                         xI--;
                         chess1.setLocation(xI, yI);
                         repaint();
-                        System.out.println(xI + " " + yI);
+//                        System.out.println(xI + " " + yI);
                     } else {
                         cancel();
 
@@ -733,7 +733,8 @@ public class ChessboardComponent extends JComponent implements Runnable{
     private int port = 10086;
 
 
-    InetAddress ia = InetAddress.getByName("10.17.117.22");
+    InetAddress ia = InetAddress.getByName("10.17.91.233");
+
 
 
 

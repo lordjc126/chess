@@ -202,7 +202,7 @@ public class ChessboardComponent extends JComponent implements Runnable{
 //                            System.out.println(xI + " " + yI);
                         }
                     } else {
-                        loadGame(stringList.get(move-1));
+//                        loadGame(stringList.get(move-1));
                         cancel();
                     }
                 }
@@ -742,13 +742,15 @@ public class ChessboardComponent extends JComponent implements Runnable{
 
 
     public void send() throws IOException {
-        sendDs = new DatagramSocket(1000);
+        if(whetherNet) {
+            sendDs = new DatagramSocket(1000);
 
-        byte[] data = (stringList.get(move-1)).getBytes();
+            byte[] data = (stringList.get(move - 1)).getBytes();
 
-        sendData=new DatagramPacket(data,data.length,ia,port);
-        sendDs.send(sendData);
-        sendDs.close();
+            sendData = new DatagramPacket(data, data.length, ia, port);
+            sendDs.send(sendData);
+            sendDs.close();
+        }
     }
 
 

@@ -164,10 +164,12 @@ public class ChessGameFrame extends JFrame {
                     chessboard.setStopUndoing(true);
                 }
 
-                try {
-                    send();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(If) {
+                    try {
+                        send();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
@@ -204,10 +206,12 @@ public class ChessGameFrame extends JFrame {
                     }
                 }
 
-                try {
-                    send();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(If) {
+                    try {
+                        send();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
